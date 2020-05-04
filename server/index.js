@@ -38,8 +38,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("api/auth", auth);
-app.use("api/jobs", scrapers);
+app.use("/api/auth", auth);
+app.use("/api/jobs", scrapers);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
