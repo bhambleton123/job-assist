@@ -34,4 +34,13 @@ const scrapeIndeed = async (url, pageNum) => {
   return jobs;
 };
 
-module.exports = { scrapeIndeed };
+const scrapeIndeedJobDescription = async (url) => {
+  const page = await __launchPuppeteer(url);
+
+  const description = await page.evaluate(() => {
+    return document.getElementById("jobDescriptionText").innerHTML;
+  });
+  return description;
+};
+
+module.exports = { scrapeIndeed, scrapeIndeedJobDescription };

@@ -1,4 +1,6 @@
 const scrapeIndeed = require("../util/scrapers").scrapeIndeed;
+const scrapeIndeedJobDescription = require("../util/scrapers")
+  .scrapeIndeedJobDescription;
 const redisClient = require("../util/caching/redis-client");
 
 const getJobsFromIndeed = async (req, res) => {
@@ -43,4 +45,15 @@ const getJobsFromIndeed = async (req, res) => {
   );
 };
 
-module.exports = { getJobsFromIndeed };
+const getJobDescriptionFromIndeed = async (req, res) => {
+  try {
+    const description = await scrapeIndeedJobDescription(
+      req.query.url.toString()
+    );
+    res.send(description);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
+module.exports = { getJobsFromIndeed, getJobDescriptionFromIndeed };
