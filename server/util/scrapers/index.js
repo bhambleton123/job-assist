@@ -11,31 +11,26 @@ const __launchPuppeteer = async (url) => {
   return page;
 };
 
-const scrapeIndeed = async (url, pages) => {
-  let allJobs = [];
-  for (let i = 1; i <= pages; i++) {
-    let newUrl = `${url}&start=${50 * i}`;
-    const page = await __launchPuppeteer(newUrl);
+const scrapeIndeed = async (url, pageNum) => {
+  let newUrl = `${url}&start=${50 * pageNum}`;
+  const page = await __launchPuppeteer(newUrl);
 
-    const jobs = await page.evaluate(() => {
-      const jobLinks = Array.from(
-        document.getElementsByClassName("jobtitle")
-      ).map((title, index) => {
-        return {
-          title: title.innerHTML.slice(1),
-          company: document.getElementsByClassName("company")[index].innerText,
-          link: title.toString(),
-          posted: document.getElementsByClassName("date")[index].innerText,
-        };
-      });
-
-      return jobLinks;
+  const jobs = await page.evaluate(() => {
+    const jobLinks = Array.from(
+      document.getElementsByClassName("jobtitle")
+    ).map((title, index) => {
+      return {
+        title: title.innerHTML.slice(1),
+        company: document.getElementsByClassName("company")[index].innerText,
+        link: title.toString(),
+        posted: document.getElementsByClassName("date")[index].innerText,
+      };
     });
 
-    allJobs = [...allJobs, ...jobs];
-  }
+    return jobLinks;
+  });
 
-  return allJobs;
+  return jobs;
 };
 
 module.exports = { scrapeIndeed };
