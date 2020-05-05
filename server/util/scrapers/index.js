@@ -22,6 +22,7 @@ const scrapeIndeed = async (url, pageNum) => {
       return {
         title: title.innerHTML.slice(1),
         company: document.getElementsByClassName("company")[index].innerText,
+        location: document.getElementsByClassName("location")[index].innerText,
         link: title.toString(),
         posted: document.getElementsByClassName("date")[index].innerText,
       };
