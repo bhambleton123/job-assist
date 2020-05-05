@@ -1,7 +1,9 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const app = express();
 const port = process.env.PORT || 3001;
+const cors = require("cors");
 const jobSearch = require("./routes/job-search");
 const auth = require("./routes/auth");
 const passport = require("./auth/passport");
@@ -15,6 +17,9 @@ redisClient.on("error", (err) => {
   console.log(`Redis error: ${err}`);
 });
 
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -39,6 +44,10 @@ app.use(passport.session());
 
 app.use("/api/auth", auth);
 app.use("/api/jobs", jobSearch);
+
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "../client/build/index.html"))
+);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

@@ -5,16 +5,18 @@ import JobBoard from "./job-board/job-board";
 import LandingPage from "./landing-page/landing-page";
 import Profile from "./profile/profile";
 import SearchJobs from "./search-jobs/search-jobs";
+import Error from "./error";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/job-board" component={JobBoard} />
-        <Route path="/search-jobs" component={SearchJobs} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/" component={LandingPage} />
+        <Route exact path="/dashboard" component={Dashboard} />
+        <Route exact path="/job-board" component={JobBoard} />
+        <Route exact path="/search-jobs" component={SearchJobs} />
+        <Route exact path="/profile" component={Profile} />
+        <Route exact path="/" component={LandingPage} />
+        <Route path="*" component={Error} />
       </Switch>
     </BrowserRouter>
   );
