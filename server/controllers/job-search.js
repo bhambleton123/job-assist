@@ -16,7 +16,7 @@ const getJobsFromIndeed = async (req, res) => {
           `https://www.indeed.com/jobs?q=${req.params.title}&fromage=${
             req.query.posted ? req.query.posted : 3
           }&explvl=${
-            req.query.exprience ? req.query.experience : "entry_level"
+            req.query.exprience ? req.query.experience : ""
           }&limit=50&l=${req.query.location ? req.query.location : ""}`,
           req.query.page ? req.query.page : 0
         );
