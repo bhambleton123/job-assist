@@ -32,6 +32,9 @@ const getJobsFromIndeed = async (req, res) => {
           "EX",
           60,
           (err) => {
+            if (err) {
+              res.status(500).send(err);
+            }
             res.send(jobs);
           }
         );
