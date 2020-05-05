@@ -3,7 +3,11 @@ const redisClient = require("../util/caching/redis-client");
 
 const getJobsFromIndeed = async (req, res) => {
   redisClient.get(
-    `Title=${req.params.title}&Posted=${req.query.posted}&Experience=${req.query.experience}&Location=${req.query.location}&Pages=${req.query.pages}`,
+    `Title=${req.params.title.toLowerCase()}&Posted=${
+      req.query.posted
+    }&Experience=${
+      req.query.experience
+    }&Location=${req.query.location.toLowerCase()}&Pages=${req.query.pages}`,
     async (err, data) => {
       if (data) {
         res.send(JSON.parse(data.toString()));
@@ -17,7 +21,13 @@ const getJobsFromIndeed = async (req, res) => {
           req.query.page ? req.query.page : 0
         );
         redisClient.set(
-          `Title=${req.params.title}&Posted=${req.query.posted}&Experience=${req.query.experience}&Location=${req.query.location}&Pages=${req.query.pages}`,
+          `Title=${req.params.title.toLowerCase()}&Posted=${
+            req.query.posted
+          }&Experience=${
+            req.query.experience
+          }&Location=${req.query.location.toLowerCase()}&Pages=${
+            req.query.pages
+          }`,
           JSON.stringify(jobs),
           "EX",
           60,
