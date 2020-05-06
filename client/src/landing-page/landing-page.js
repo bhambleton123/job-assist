@@ -10,6 +10,8 @@ import GoogleLogo from "../assets/Google__G__Logo.svg";
 import Title from "../assets/Title.svg";
 import FakeSearch from "../assets/Search-Bar.svg";
 import FakeCards from "../assets/Cards.svg";
+import Board from "../assets/Board.svg";
+import Timeline from "../assets/Timeline.svg";
 
 export default function LandingPage() {
   const useStyles = makeStyles({
@@ -37,6 +39,9 @@ export default function LandingPage() {
     },
     search: {
       width: "54vw",
+      fontSize: "calc(10px + 1.5vw)",
+    },
+    boardFont: {
       fontSize: "calc(10px + 1.5vw)",
     },
     searchBox: {
@@ -89,6 +94,45 @@ export default function LandingPage() {
         <Box ml="17vw">
           <img src={FakeSearch} className={classes.searchBox} />
           <img src={FakeCards} className={classes.searchBox} />
+          <Box mt="50px">
+            <Box ml="20px" mb="20px">
+              <Typography color="primary" className={classes.boardFont}>
+                Organize jobs you've added to your profile
+              </Typography>
+            </Box>
+            <Box mb="30px">
+              <img src={Board} className={classes.searchBox} />
+            </Box>
+            <Box ml="20px" mb="20px">
+              <Typography color="primary" className={classes.boardFont}>
+                View a timeline of jobs that you've applied to
+              </Typography>
+            </Box>
+            <img src={Timeline} className={classes.searchBox} />
+          </Box>
+        </Box>
+        <Box
+          mt="100px"
+          mb="100px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <a
+            className={classes.link}
+            href="http://localhost:3000/api/auth/google"
+          >
+            <Button
+              startIcon={
+                <img className={classes.googleLogo} src={GoogleLogo} />
+              }
+              className={classes.buttonRound}
+              variant="contained"
+              color="primary"
+            >
+              Log in
+            </Button>
+          </a>
         </Box>
       </Box>
     </>
