@@ -1,10 +1,14 @@
 import React from "react";
-import axios from "axios";
-import { Box, makeStyles, Button, Typography } from "@material-ui/core";
+import {
+  Box,
+  makeStyles,
+  Button,
+  Typography,
+  Divider,
+} from "@material-ui/core";
 import GoogleLogo from "../assets/Google__G__Logo.svg";
+import FakeJobCard from "./fake-job-card";
 import Title from "../assets/Title.svg";
-
-import Avatar from "@material-ui/core/Avatar";
 
 export default function LandingPage() {
   const useStyles = makeStyles({
@@ -38,6 +42,12 @@ export default function LandingPage() {
       width: "58vw",
       height: "calc(2px + 5vh)",
       backgroundColor: "#C4C4C4",
+      borderRadius: "40px 40px",
+    },
+    fakeSearchButton: {
+      width: "100px",
+      height: "38px",
+      backgroundColor: "#FE9696",
       borderRadius: "20px 20px",
     },
   });
@@ -77,13 +87,50 @@ export default function LandingPage() {
       </Box>
 
       <Box display="flex" flexDirection="column" mt="4vh">
-        <Box textAlign="center">
+        <Box textAlign="center" mb="20px">
           <Typography className={classes.search} color="primary">
             Search for Jobs
           </Typography>
         </Box>
         <Box ml="17vw">
-          <Box className={classes.searchBox}></Box>
+          <Box
+            className={classes.searchBox}
+            mb="20px"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            pt="5px"
+            pb="5px"
+          >
+            <Box
+              display="flex"
+              justifyContent="space-around"
+              alignItems="center"
+              height="100%"
+              width="100%"
+            >
+              <Typography color="secondary">Software Engineer</Typography>
+              <Divider orientation="vertical" color="primary" />
+              <Typography color="secondary">NYC</Typography>
+              <Divider orientation="vertical" color="primary" />
+              <Typography color="secondary">Entry Level</Typography>
+              <Divider orientation="vertical" color="primary" />
+              <Typography color="secondary">Past 3 Days</Typography>
+              <Divider orientation="vertical" color="primary" />
+            </Box>
+            <Box
+              className={classes.fakeSearchButton}
+              mr="17px"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Typography color="primary">Search</Typography>
+            </Box>
+          </Box>
+          <FakeJobCard />
+          <FakeJobCard />
+          <FakeJobCard />
         </Box>
       </Box>
     </Box>

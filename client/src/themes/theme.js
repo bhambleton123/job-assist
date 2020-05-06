@@ -3,7 +3,10 @@ export const theme = createMuiTheme({
   palette: {
     //color of everything else besides background- grey
     primary: {
-      main: "#E1DBDB",
+      main: "#EDEDED",
+    },
+    secondary: {
+      main: "#745F5F",
     },
     //background = blue
     background: {
