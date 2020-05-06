@@ -115,9 +115,18 @@ export default function LandingPage() {
           mt="100px"
           mb="100px"
           display="flex"
+          flexDirection="column"
           justifyContent="center"
           alignItems="center"
         >
+          <Typography color="primary" className={classes.boardFont}>
+            And more!
+          </Typography>
+          <Box mb="20px">
+            <Typography color="primary">
+              Log in with your google account
+            </Typography>
+          </Box>
           <a
             className={classes.link}
             href="http://localhost:3000/api/auth/google"
