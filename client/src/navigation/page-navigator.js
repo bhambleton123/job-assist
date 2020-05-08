@@ -28,7 +28,7 @@ export default function PageNavigator({ page }) {
   }, [value]);
   return (
     <Box display="flex">
-      <Box display="flex" flexDirection="column" maxWidth="300px">
+      <Box display="flex" flexDirection="column">
         <img src={Title} className={classes.title} />
         <Tabs
           orientation="vertical"
