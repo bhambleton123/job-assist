@@ -1,19 +1,16 @@
 import React from "react";
-import {
-  Box,
-  makeStyles,
-  Button,
-  Typography,
-  Divider,
-} from "@material-ui/core";
+import { Box, makeStyles, Button, Typography } from "@material-ui/core";
 import GoogleLogo from "../assets/Google__G__Logo.svg";
 import Title from "../assets/Title.svg";
 import FakeSearch from "../assets/Search-Bar.svg";
 import FakeCards from "../assets/Cards.svg";
 import Board from "../assets/Board.svg";
 import Timeline from "../assets/Timeline.svg";
+import { useHistory } from "react-router-dom";
+import { userContext } from "../context/user-context";
 
 export default function LandingPage() {
+  let history = useHistory();
   const useStyles = makeStyles({
     top: {
       backgroundColor: "#FE9696",
@@ -50,9 +47,19 @@ export default function LandingPage() {
       useSelect: "none",
     },
   });
+  const isAuthed = (value) => {
+    if (value && value.email) {
+      history.push("/dashboard");
+    }
+  };
   const classes = useStyles();
   return (
     <>
+      <userContext.Consumer>
+        {(value) => {
+          isAuthed(value);
+        }}
+      </userContext.Consumer>
       <Box className={classes.top} height="100vh">
         <Box display="flex" flexDirection="row" justifyContent="flex-end">
           <Box id="button-container" mt="20px" mr="20px">

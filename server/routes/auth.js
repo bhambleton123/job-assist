@@ -13,9 +13,7 @@ router.get("/google/callback", passport.authenticate("google"), (req, res) => {
   }
 });
 
-router.get("/user", (req, res) =>
-  res.send(req.user ? req.user : { User: "Not logged in" })
-);
+router.get("/user", (req, res) => res.send(req.user ? req.user : null));
 
 router.get("/logout", (req, res) => {
   req.logout();
