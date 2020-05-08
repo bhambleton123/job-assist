@@ -1,5 +1,10 @@
 import React from "react";
+import Profile from "../profile/profile";
 
 export default function JobBoard() {
-  return <div>Job Board</div>;
+  return (
+    <div>
+      <Profile />
+    </div>
+  );
 }
