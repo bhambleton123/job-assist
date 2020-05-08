@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { IconButton, Menu, MenuItem, makeStyles } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 export default function ProfileButton({ setUser, profilePic }) {
@@ -14,7 +13,6 @@ export default function ProfileButton({ setUser, profilePic }) {
       paddingTop: "100px",
     },
   });
-  let history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
