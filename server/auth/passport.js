@@ -14,13 +14,17 @@ passport.use(
       User.findOrCreate({
         where: {
           id: profile.id,
-          firstName: profile.name.givenName,
-          lastName: profile.name.familyName,
           email: profile.emails[0].value,
         },
       })
         .then((user) => {
-          return done(null, user[0]);
+          return done(null, {
+            id: user[0].id,
+            email: user[0].email,
+            firstName: profile.name.givenName,
+            lastName: profile.name.familyName,
+            profilePic: profile.photos[0].value,
+          });
         })
         .catch((err) => {
           return done(err);
