@@ -1,10 +1,9 @@
 import React from "react";
-import Profile from "../profile/profile";
 
 export default function Dashboard() {
   return (
     <div>
-      <Profile />
+      <p>Welcome to the dashboard!</p>
     </div>
   );
 }
