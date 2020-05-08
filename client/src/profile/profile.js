@@ -7,20 +7,21 @@ import { Box } from "@material-ui/core";
 export default function Profile() {
   let history = useHistory();
   return (
-    <>
-      <userContext.Consumer>
-        {(value) => {
-          if (!(value && value.email)) {
-            history.push("/");
-          } else {
-            return (
-              <Box display="flex" justifyContent="flex-end">
-                <ProfileButton profilePic={value.profilePic} />
-              </Box>
-            );
-          }
-        }}
-      </userContext.Consumer>
-    </>
+    <userContext.Consumer>
+      {(value) => {
+        if (value.user) {
+          return (
+            <Box display="flex" justifyContent="flex-end" mr="20px">
+              <ProfileButton
+                setUser={value.setUser}
+                profilePic={value.user.profilePic}
+              />
+            </Box>
+          );
+        } else {
+          history.push("/");
+        }
+      }}
+    </userContext.Consumer>
   );
 }

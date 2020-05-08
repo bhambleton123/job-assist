@@ -47,17 +47,15 @@ export default function LandingPage() {
       useSelect: "none",
     },
   });
-  const isAuthed = (value) => {
-    if (value && value.email) {
-      history.push("/dashboard");
-    }
-  };
+
   const classes = useStyles();
   return (
     <>
       <userContext.Consumer>
         {(value) => {
-          isAuthed(value);
+          if (value.user) {
+            history.push("/dashboard");
+          }
         }}
       </userContext.Consumer>
       <Box className={classes.top} height="100vh">
