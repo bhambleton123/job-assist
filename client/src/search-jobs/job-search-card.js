@@ -89,7 +89,35 @@ export default function JobSearchCard({ title, location, company, link }) {
             ""
           )}
           {showSpinner ? <CircularProgress color="secondary" /> : ""}
-          {description.length > 0 ? <Box>{renderHTML(description)}</Box> : ""}
+          {description.length > 0 ? (
+            <Box>
+              {renderHTML(description)}
+              <Box
+                display="flex"
+                alignItems="center"
+                flexDirection="column"
+                width="100%"
+                fontSize="20px"
+              >
+                <Typography>
+                  Apply{" "}
+                  <a href={link} target="_blank">
+                    here
+                  </a>
+                </Typography>
+                <Button>
+                  <Typography
+                    color="secondary"
+                    onClick={() => setDescription("")}
+                  >
+                    MINIMIZE
+                  </Typography>
+                </Button>
+              </Box>
+            </Box>
+          ) : (
+            ""
+          )}
         </Box>
       </CardActions>
     </Card>
