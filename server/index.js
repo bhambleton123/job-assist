@@ -12,6 +12,10 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const redisClient = require("./util/caching/redis-client");
 const redisStore = require("connect-redis")(session);
+const EventEmitter = require("events");
+
+const ee = new EventEmitter();
+ee.setMaxListeners(30);
 
 redisClient.on("error", (err) => {
   console.log(`Redis error: ${err}`);

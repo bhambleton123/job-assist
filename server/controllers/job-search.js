@@ -52,7 +52,7 @@ const getJobDescriptionFromIndeed = async (req, res) => {
     );
     res.send(description);
   } catch (err) {
-    res.status(500).send(err);
+    res.send(err);
   }
 };
 

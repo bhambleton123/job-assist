@@ -10,15 +10,16 @@ import {
   FormControl,
   Select,
   CircularProgress,
+  Divider,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import axios from "axios";
 import JobSearchCard from "./job-search-card.js";
 
 export default function SearchJobs() {
-  const [role, setRole] = useState("chef");
-  const [daysAgo, setDaysAgo] = useState(7);
-  const [location, setLocation] = useState("brooklyn");
+  const [role, setRole] = useState("");
+  const [daysAgo, setDaysAgo] = useState(1);
+  const [location, setLocation] = useState("");
   const [experience, setExperience] = useState("");
   const [jobs, setJobs] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
@@ -28,6 +29,7 @@ export default function SearchJobs() {
 
   const submit = () => {
     console.log("clicked", role, daysAgo, location, experience);
+    setJobs([]);
     setShowSpinner(true);
     axios
       .get(
@@ -50,15 +52,17 @@ export default function SearchJobs() {
     search: {
       backgroundColor: theme.palette.primary.main,
       borderRadius: "40px",
+      minWidth: "452px",
     },
     smallTextField: {
-      width: "20%",
+      width: "5vw",
     },
     bigTextField: {
-      width: "30%",
+      width: "10vw",
     },
     buttonRound: {
-      borderRadius: "20px 20px 20px 20px",
+      borderRadius: "35px",
+      height: "50px",
       backgroundColor: "#FE9696",
     },
     spinner: {
@@ -76,76 +80,80 @@ export default function SearchJobs() {
     >
       <Box
         className={classes.search}
-        width="75%"
+        width="70%"
         height="70px"
         display="flex"
         flexDirection="row"
+        justifyContent="space-between"
+        pl="20px"
+        pt="5px"
+        pb="5px"
       >
-        <Box ml="30px" width="88%">
-          <TextField
-            className={classes.bigTextField}
-            noValidate
-            autoComplete="off"
-            label="Role"
-            style={{ margin: 8 }}
-            color="secondary"
-            placeholder="i.e Software Engineer"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            onChange={(e) => setRole(e.target.value)}
-            value={role}
-          />
-          <TextField
-            className={classes.smallTextField}
-            label="Location"
-            style={{ margin: 8 }}
-            color="secondary"
-            placeholder="i.e New York City"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            onChange={(e) => setLocation(e.target.value)}
-            value={location}
-          />
-          <FormControl style={{ margin: 8 }} className={classes.smallTextField}>
-            <InputLabel shrink>Experience Level</InputLabel>
-            <Select
-              labelId="demo-simple-select-placeholder-label-label"
-              id="demo-simple-select-placeholder-label"
-              value={experience}
-              onChange={handleChange}
-              displayEmpty
-              inputProps={{ "aria-label": "Without label" }}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={"entry_level"}>Entry Level</MenuItem>
-              <MenuItem value={"mid_level"}>Mid Level</MenuItem>
-              <MenuItem value={"senior_level"}>Senior Level</MenuItem>
-            </Select>
-          </FormControl>
-
-          <FormControl style={{ margin: 8 }} className={classes.smallTextField}>
-            <InputLabel shrink>Job Posted</InputLabel>
-            <Select
-              labelId="demo-simple-select-placeholder-label-label"
-              id="demo-simple-select-placeholder-label"
-              value={daysAgo}
-              onChange={(e) => setDaysAgo(e.target.value)}
-              displayEmpty
-              inputProps={{ "aria-label": "Without label" }}
-            >
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={7}>7</MenuItem>
-              <MenuItem value="">30+</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-
-        <Box display="flex" flexDirection="column" alignSelf="center">
+        <TextField
+          className={classes.bigTextField}
+          noValidate
+          autoComplete="off"
+          label="Role"
+          style={{ margin: 8 }}
+          color="secondary"
+          placeholder="i.e Software Engineer"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={(e) => setRole(e.target.value)}
+          value={role}
+        />
+        <Divider orientation="vertical" />
+        <TextField
+          className={classes.smallTextField}
+          label="Location"
+          style={{ margin: 8 }}
+          color="secondary"
+          placeholder="i.e New York City"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={(e) => setLocation(e.target.value)}
+          value={location}
+        />
+        <Divider orientation="vertical" />
+        <FormControl style={{ margin: 8 }} className={classes.smallTextField}>
+          <InputLabel shrink>Experience</InputLabel>
+          <Select
+            labelId="demo-simple-select-placeholder-label-label"
+            id="demo-simple-select-placeholder-label"
+            value={experience}
+            onChange={handleChange}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value={"entry_level"}>Entry Level</MenuItem>
+            <MenuItem value={"mid_level"}>Mid Level</MenuItem>
+            <MenuItem value={"senior_level"}>Senior Level</MenuItem>
+          </Select>
+        </FormControl>
+        <Divider orientation="vertical" />
+        <FormControl style={{ margin: 8 }} className={classes.smallTextField}>
+          <InputLabel shrink>Job Posted</InputLabel>
+          <Select
+            labelId="demo-simple-select-placeholder-label-label"
+            id="demo-simple-select-placeholder-label"
+            value={daysAgo}
+            onChange={(e) => setDaysAgo(e.target.value)}
+            displayEmpty
+            inputProps={{ "aria-label": "Without label" }}
+          >
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            <MenuItem value={7}>7</MenuItem>
+            <MenuItem value="">30+</MenuItem>
+          </Select>
+        </FormControl>
+        <Divider orientation="vertical" />
+        <Box display="flex" flexDirection="column" alignSelf="center" mr="15px">
           <Button
             onClick={submit}
             variant="contained"
@@ -162,6 +170,7 @@ export default function SearchJobs() {
           title={job.title}
           company={job.company}
           location={job.location}
+          link={job.link}
         />
       ))}
       {showSpinner ? (
