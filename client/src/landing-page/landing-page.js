@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, makeStyles, Button, Typography } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import GoogleLogo from "../assets/Google__G__Logo.svg";
 import Title from "../assets/Title.svg";
 import FakeSearch from "../assets/Search-Bar.svg";
@@ -11,6 +12,7 @@ import { userContext } from "../context/user-context";
 
 export default function LandingPage() {
   let history = useHistory();
+  const theme = useTheme();
   const useStyles = makeStyles({
     top: {
       backgroundColor: "#FE9696",
@@ -33,18 +35,24 @@ export default function LandingPage() {
     description: {
       width: "58vw",
       fontSize: "calc(10px + 1.5vw)",
+      color: theme.palette.primaryTwo.main,
     },
     search: {
       width: "54vw",
       fontSize: "calc(10px + 1.5vw)",
+      color: theme.palette.primaryTwo.main,
     },
     boardFont: {
       fontSize: "calc(10px + 1.5vw)",
+      color: theme.palette.primaryTwo.main,
     },
     searchBox: {
       width: "70vw",
       pointerEvents: "none",
       useSelect: "none",
+    },
+    loginText: {
+      color: theme.palette.primaryTwo.main,
     },
   });
 
@@ -71,7 +79,6 @@ export default function LandingPage() {
                 }
                 className={classes.buttonRound}
                 variant="contained"
-                color="primary"
               >
                 Log in
               </Button>
@@ -83,7 +90,7 @@ export default function LandingPage() {
           <Box mt="18vh">
             <img src={Title} className={classes.person} />
           </Box>
-          <Typography color="primary" className={classes.description}>
+          <Typography className={classes.description}>
             Organize your job search by having an all-in-one place for cover
             letters, contact info, resumes, and more!
           </Typography>
@@ -92,16 +99,14 @@ export default function LandingPage() {
 
       <Box display="flex" flexDirection="column" mt="4vh">
         <Box textAlign="center" mb="20px">
-          <Typography className={classes.search} color="primary">
-            Search for Jobs
-          </Typography>
+          <Typography className={classes.search}>Search for Jobs</Typography>
         </Box>
         <Box ml="17vw">
           <img src={FakeSearch} className={classes.searchBox} />
           <img src={FakeCards} className={classes.searchBox} />
           <Box mt="50px">
             <Box ml="20px" mb="20px">
-              <Typography color="primary" className={classes.boardFont}>
+              <Typography className={classes.boardFont}>
                 Organize jobs you've added to your profile
               </Typography>
             </Box>
@@ -109,7 +114,7 @@ export default function LandingPage() {
               <img src={Board} className={classes.searchBox} />
             </Box>
             <Box ml="20px" mb="20px">
-              <Typography color="primary" className={classes.boardFont}>
+              <Typography className={classes.boardFont}>
                 View a timeline of jobs that you've applied to
               </Typography>
             </Box>
@@ -124,13 +129,9 @@ export default function LandingPage() {
           justifyContent="center"
           alignItems="center"
         >
-          <Typography color="primary" className={classes.boardFont}>
-            And more!
-          </Typography>
-          <Box mb="20px">
-            <Typography color="primary">
-              Log in with your google account
-            </Typography>
+          <Typography className={classes.boardFont}>And more!</Typography>
+          <Box mb="20px" className={classes.loginText}>
+            <Typography>Log in with your google account</Typography>
           </Box>
           <a
             className={classes.link}
@@ -142,7 +143,6 @@ export default function LandingPage() {
               }
               className={classes.buttonRound}
               variant="contained"
-              color="primary"
             >
               Log in
             </Button>

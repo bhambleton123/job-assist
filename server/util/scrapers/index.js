@@ -1,19 +1,19 @@
 const puppeteer = require("puppeteer");
 const avoidDetection = require("./avoid-detection");
 
-const __launchPuppeteer = async (url) => {
+const __launchPuppeteer = async () => {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
   await avoidDetection(page);
 
-  await page.goto(url);
   return page;
 };
 
 const scrapeIndeed = async (url, pageNum) => {
   let newUrl = `${url}&start=${50 * pageNum}`;
-  const page = await __launchPuppeteer(newUrl);
+  const page = await __launchPuppeteer();
+  await page.goto(newUrl);
 
   const jobs = await page.evaluate(() => {
     const jobLinks = Array.from(
@@ -28,14 +28,16 @@ const scrapeIndeed = async (url, pageNum) => {
       };
     });
 
-    return jobLinks;
+    return jobLinks.filter((job) => job.link.split("/")[3] !== "pagead");
   });
 
   return jobs;
 };
 
 const scrapeIndeedJobDescription = async (url) => {
-  const page = await __launchPuppeteer(url);
+  const page = await __launchPuppeteer();
+  url = url.replace("/rc/clk", "/viewjob");
+  await page.goto(url);
 
   const description = await page.evaluate(() => {
     return document.getElementById("jobDescriptionText").innerHTML;
