@@ -13,6 +13,7 @@ import {
   Divider,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
+import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
 import JobSearchCard from "./job-search-card.js";
 
@@ -23,6 +24,7 @@ export default function SearchJobs() {
   const [experience, setExperience] = useState("");
   const [jobs, setJobs] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
+  const [alert, setAlert] = useState(false);
   const handleChange = (event) => {
     setExperience(event.target.value);
   };
@@ -31,9 +33,10 @@ export default function SearchJobs() {
     console.log("clicked", role, daysAgo, location, experience);
     setJobs([]);
     setShowSpinner(true);
+    setAlert(false);
     axios
       .get(
-        `/api/jobs/${role}?posted=${daysAgo}&page=0&location=${location.replace(
+        `/api/jobs/list?role=${role}&posted=${daysAgo}&page=0&location=${location.replace(
           / /g,
           "+"
         )}&experience=${experience}`
@@ -44,7 +47,9 @@ export default function SearchJobs() {
         setJobs(res.data);
       })
       .catch((err) => {
-        console.error(err);
+        if (err.response.status) {
+          setAlert(true);
+        }
       });
   };
   const theme = useTheme();
@@ -164,6 +169,14 @@ export default function SearchJobs() {
         </Box>
       </Box>
 
+      {alert ? (
+        <Box mt="20px">
+          <Alert severity="error">Please enter a role</Alert>
+        </Box>
+      ) : (
+        ""
+      )}
+
       {jobs.map((job, i) => (
         <JobSearchCard
           key={i}
@@ -173,7 +186,7 @@ export default function SearchJobs() {
           link={job.link}
         />
       ))}
-      {showSpinner ? (
+      {showSpinner && !alert ? (
         <CircularProgress className={classes.spinner} color="secondary" />
       ) : (
         ""
