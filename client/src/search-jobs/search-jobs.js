@@ -17,12 +17,18 @@ import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
 import JobSearchCard from "./job-search-card.js";
 
-export default function SearchJobs() {
-  const [role, setRole] = useState("");
-  const [daysAgo, setDaysAgo] = useState(1);
-  const [location, setLocation] = useState("");
-  const [experience, setExperience] = useState("");
-  const [jobs, setJobs] = useState([]);
+export default function SearchJobs({
+  role,
+  setRole,
+  daysAgo,
+  setDaysAgo,
+  location,
+  setLocation,
+  experience,
+  setExperience,
+  jobs,
+  setJobs,
+}) {
   const [showSpinner, setShowSpinner] = useState(false);
   const [alert, setAlert] = useState(false);
   const handleChange = (event) => {
@@ -41,7 +47,6 @@ export default function SearchJobs() {
         )}&experience=${experience}`
       )
       .then((res) => {
-        console.log(res.data);
         setShowSpinner(false);
         setJobs(res.data);
       })
