@@ -18,7 +18,7 @@ const getJobsFromIndeed = async (req, res) => {
           res.send(JSON.parse(data.toString()));
         } else {
           const jobs = await scrapeIndeed(
-            `https://www.indeed.com/jobs?q=${req.params.title}&fromage=${
+            `https://www.indeed.com/jobs?q=${req.query.role}&fromage=${
               req.query.posted ? req.query.posted : 3
             }&explvl=${
               req.query.exprience ? req.query.experience : ""
