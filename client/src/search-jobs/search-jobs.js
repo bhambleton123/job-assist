@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Box,
   makeStyles,
@@ -6,45 +6,53 @@ import {
   TextField,
   InputLabel,
   MenuItem,
-  FormHelperText,
   FormControl,
   Select,
   CircularProgress,
   Divider,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
+import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
 import JobSearchCard from "./job-search-card.js";
 
-export default function SearchJobs() {
-  const [role, setRole] = useState("");
-  const [daysAgo, setDaysAgo] = useState(1);
-  const [location, setLocation] = useState("");
-  const [experience, setExperience] = useState("");
-  const [jobs, setJobs] = useState([]);
+export default function SearchJobs({
+  role,
+  setRole,
+  daysAgo,
+  setDaysAgo,
+  location,
+  setLocation,
+  experience,
+  setExperience,
+  jobs,
+  setJobs,
+}) {
   const [showSpinner, setShowSpinner] = useState(false);
+  const [alert, setAlert] = useState(false);
   const handleChange = (event) => {
     setExperience(event.target.value);
   };
 
   const submit = () => {
-    console.log("clicked", role, daysAgo, location, experience);
     setJobs([]);
     setShowSpinner(true);
+    setAlert(false);
     axios
       .get(
-        `/api/jobs/${role}?posted=${daysAgo}&page=0&location=${location.replace(
+        `/api/jobs/list?role=${role}&posted=${daysAgo}&page=0&location=${location.replace(
           / /g,
           "+"
         )}&experience=${experience}`
       )
       .then((res) => {
-        console.log(res.data);
         setShowSpinner(false);
         setJobs(res.data);
       })
       .catch((err) => {
-        console.error(err);
+        if (err.response.status) {
+          setAlert(true);
+        }
       });
   };
   const theme = useTheme();
@@ -164,16 +172,28 @@ export default function SearchJobs() {
         </Box>
       </Box>
 
-      {jobs.map((job, i) => (
-        <JobSearchCard
-          key={i}
-          title={job.title}
-          company={job.company}
-          location={job.location}
-          link={job.link}
-        />
-      ))}
-      {showSpinner ? (
+      {alert ? (
+        <Box mt="20px">
+          <Alert severity="error">Please enter a role</Alert>
+        </Box>
+      ) : (
+        ""
+      )}
+
+      {useMemo(
+        () =>
+          jobs.map((job, i) => (
+            <JobSearchCard
+              key={i}
+              title={job.title}
+              company={job.company}
+              location={job.location}
+              link={job.link}
+            />
+          )),
+        [jobs]
+      )}
+      {showSpinner && !alert ? (
         <CircularProgress className={classes.spinner} color="secondary" />
       ) : (
         ""

@@ -8,6 +8,11 @@ import SearchJobs from "../search-jobs/search-jobs";
 
 export default function PageNavigator({ page }) {
   const [value, setValue] = useState(page);
+  const [role, setRole] = useState("");
+  const [daysAgo, setDaysAgo] = useState(1);
+  const [location, setLocation] = useState("");
+  const [experience, setExperience] = useState("");
+  const [jobs, setJobs] = useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -15,7 +20,8 @@ export default function PageNavigator({ page }) {
 
   const useStyles = makeStyles({
     title: {
-      width: "200px",
+      width: "12vw",
+      minWidth: "100px",
       marginBottom: "40px",
       marginLeft: "30px",
     },
@@ -28,7 +34,7 @@ export default function PageNavigator({ page }) {
   }, [value]);
   return (
     <Box display="flex">
-      <Box display="flex" flexDirection="column">
+      <Box display="flex" flexDirection="column" width="12vw" minWidth="130px">
         <img src={Title} className={classes.title} />
         <Tabs
           orientation="vertical"
@@ -48,7 +54,20 @@ export default function PageNavigator({ page }) {
           if (page === "dashboard") {
             return <Dashboard />;
           } else if (page === "search-jobs") {
-            return <SearchJobs />;
+            return (
+              <SearchJobs
+                role={role}
+                setRole={setRole}
+                daysAgo={daysAgo}
+                setDaysAgo={setDaysAgo}
+                location={location}
+                setLocation={setLocation}
+                experience={experience}
+                setExperience={setExperience}
+                jobs={jobs}
+                setJobs={setJobs}
+              />
+            );
           } else if (page === "job-board") {
             return <JobBoard />;
           }
