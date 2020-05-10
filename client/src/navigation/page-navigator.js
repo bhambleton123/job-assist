@@ -20,7 +20,8 @@ export default function PageNavigator({ page }) {
 
   const useStyles = makeStyles({
     title: {
-      width: "200px",
+      width: "12vw",
+      minWidth: "100px",
       marginBottom: "40px",
       marginLeft: "30px",
     },
@@ -33,7 +34,7 @@ export default function PageNavigator({ page }) {
   }, [value]);
   return (
     <Box display="flex">
-      <Box display="flex" flexDirection="column">
+      <Box display="flex" flexDirection="column" width="12vw" minWidth="130px">
         <img src={Title} className={classes.title} />
         <Tabs
           orientation="vertical"
