@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Box,
   makeStyles,
@@ -6,7 +6,6 @@ import {
   TextField,
   InputLabel,
   MenuItem,
-  FormHelperText,
   FormControl,
   Select,
   CircularProgress,
@@ -181,15 +180,19 @@ export default function SearchJobs({
         ""
       )}
 
-      {jobs.map((job, i) => (
-        <JobSearchCard
-          key={i}
-          title={job.title}
-          company={job.company}
-          location={job.location}
-          link={job.link}
-        />
-      ))}
+      {useMemo(
+        () =>
+          jobs.map((job, i) => (
+            <JobSearchCard
+              key={i}
+              title={job.title}
+              company={job.company}
+              location={job.location}
+              link={job.link}
+            />
+          )),
+        [jobs]
+      )}
       {showSpinner && !alert ? (
         <CircularProgress className={classes.spinner} color="secondary" />
       ) : (
