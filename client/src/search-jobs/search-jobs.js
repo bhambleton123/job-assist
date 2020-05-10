@@ -30,7 +30,6 @@ export default function SearchJobs() {
   };
 
   const submit = () => {
-    console.log("clicked", role, daysAgo, location, experience);
     setJobs([]);
     setShowSpinner(true);
     setAlert(false);
