@@ -7,6 +7,7 @@ const cors = require("cors");
 const jobSearch = require("./routes/job-search");
 const auth = require("./routes/auth");
 const lists = require("./routes/lists");
+const boards = require("./routes/boards");
 const passport = require("./auth/passport");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -61,6 +62,7 @@ app.use(passport.session());
 app.use("/api/auth", auth);
 app.use("/api/jobs", jobSearch);
 app.use("/api/lists", lists);
+app.use("/api/boards", boards);
 
 app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "../client/build/index.html"))
