@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const jobSchema = require("./job").jobSchema;
 
 const listSchema = new Schema({
   title: String,

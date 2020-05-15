@@ -5,11 +5,8 @@ const scrapeIndeedJobDescription = require("../util/scrapers")
   .scrapeIndeedJobDescription;
 
 const createJob = async (req, res) => {
-  Board.countDocuments({ userId: req.user.id }, async (err, count) => {
-    if (err) {
-      res.status(500);
-      res.send(err);
-    }
+  try {
+    const count = await Board.countDocuments({ userId: req.user.id });
     const description = await scrapeIndeedJobDescription(req.body.link);
     const newJob = new Job({
       title: req.body.title,
@@ -33,7 +30,7 @@ const createJob = async (req, res) => {
       const lists = await List.find({ userId: req.user.id })
         .populate("jobs")
         .exec();
-      const boards = await Board.find({ userId: req.user.id })
+      let boards = await Board.find({ userId: req.user.id })
         .populate({
           path: "lists",
           populate: { path: "jobs" },
@@ -49,9 +46,18 @@ const createJob = async (req, res) => {
         await newJob.save();
         await lists[0].save();
       }
+      boards = await Board.find({ userId: req.user.id })
+        .populate({
+          path: "lists",
+          populate: { path: "jobs" },
+        })
+        .exec();
       res.send(boards);
     }
-  });
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
 };
 
 module.exports = { createJob };
