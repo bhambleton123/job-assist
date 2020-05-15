@@ -1,6 +1,7 @@
 require("dotenv").config();
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const Board = require("../models/board").Board;
 
 passport.use(
   new GoogleStrategy(
@@ -9,7 +10,14 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "/api/auth/google/callback",
     },
-    (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
+      const count = await Board.countDocuments({ userId: profile.id });
+
+      if (count === 0) {
+        const board = new Board({ title: "Default", userId: profile.id });
+        await board.save();
+      }
+
       return done(null, {
         id: profile.id,
         email: profile.emails[0].value,
