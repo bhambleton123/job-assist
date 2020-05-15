@@ -4,6 +4,26 @@ const Board = require("../models/board").Board;
 const scrapeIndeedJobDescription = require("../util/scrapers")
   .scrapeIndeedJobDescription;
 
+const getBoard = async (req, res) => {
+  try {
+    const board = await Board.findOne({
+      userId: req.user.id,
+      title: "Default",
+    })
+      .populate({
+        path: "lists",
+        populate: {
+          path: "jobs",
+        },
+      })
+      .exec();
+    res.send(board);
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
+};
+
 const createJob = async (req, res) => {
   try {
     const count = await Board.countDocuments({ userId: req.user.id });
@@ -60,4 +80,4 @@ const createJob = async (req, res) => {
   }
 };
 
-module.exports = { createJob };
+module.exports = { getBoard, createJob };
