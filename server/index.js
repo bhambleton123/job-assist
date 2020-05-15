@@ -6,6 +6,7 @@ const port = process.env.PORT || 3001;
 const cors = require("cors");
 const jobSearch = require("./routes/job-search");
 const auth = require("./routes/auth");
+const lists = require("./routes/lists");
 const passport = require("./auth/passport");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -24,7 +25,7 @@ redisClient.on("error", (err) => {
 
 mongoose.connect(
   process.env.DEV_DATABASE_URL || process.env.PROD_DATABASE_URL,
-  { useNewUrlParser: true }
+  { useNewUrlParser: true, useUnifiedTopology: true }
 );
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -59,6 +60,7 @@ app.use(passport.session());
 
 app.use("/api/auth", auth);
 app.use("/api/jobs", jobSearch);
+app.use("/api/lists", lists);
 
 app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "../client/build/index.html"))
