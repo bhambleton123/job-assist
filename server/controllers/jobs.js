@@ -81,4 +81,14 @@ const updateJobById = async (req, res) => {
   }
 };
 
-module.exports = { createJob, updateJobById };
+const deleteJobById = async (req, res) => {
+  try {
+    const deleted = await Job.deleteOne({ _id: req.params.id });
+    res.send(deleted);
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
+};
+
+module.exports = { createJob, updateJobById, deleteJobById };
