@@ -60,4 +60,25 @@ const createJob = async (req, res) => {
   }
 };
 
-module.exports = { createJob };
+const updateJobById = async (req, res) => {
+  try {
+    const updated = await Job.updateOne(
+      { _id: req.params.id, userId: req.user.id },
+      {
+        title: req.body.title,
+        company: req.body.company,
+        location: req.body.location,
+        link: req.body.link,
+        posted: req.body.posted,
+        description: req.body.description,
+      },
+      { omitUndefined: true }
+    );
+    res.send(updated);
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
+};
+
+module.exports = { createJob, updateJobById };

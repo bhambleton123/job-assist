@@ -8,6 +8,7 @@ const jobSearch = require("./routes/job-search");
 const auth = require("./routes/auth");
 const lists = require("./routes/lists");
 const boards = require("./routes/boards");
+const jobs = require("./routes/jobs");
 const passport = require("./auth/passport");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -60,8 +61,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/api/auth", auth);
-app.use("/api/jobs", jobSearch);
+app.use("/api/job-search", jobSearch);
 app.use("/api/lists", lists);
+app.use("/api/jobs", jobs);
 app.use("/api/boards", boards);
 
 app.get("*", (req, res) =>
