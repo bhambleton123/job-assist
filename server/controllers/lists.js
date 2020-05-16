@@ -38,4 +38,18 @@ const createList = async (req, res) => {
   }
 };
 
-module.exports = { createList };
+const updateList = async (req, res) => {
+  try {
+    const updatedList = await List.updateOne(
+      { userId: req.user.id, _id: req.params.id },
+      { title: req.body.title },
+      { omitUndefined: true }
+    );
+    res.send(updatedList);
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
+};
+
+module.exports = { createList, updateList };
