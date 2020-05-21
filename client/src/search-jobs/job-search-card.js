@@ -33,12 +33,12 @@ export default function JobSearchCard({ title, location, company, link }) {
       fontSize: "60px",
     },
   });
-  const classes = useStyles({});
+  const classes = useStyles();
 
   const getDescription = () => {
     setShowSpinner(true);
     axios
-      .get(`/api/jobs/description?url=${link.toString()}`)
+      .get(`/api/job-search/description?url=${link.toString()}`)
       .then((res) => {
         setShowSpinner(false);
         setDescription(res.data.toString());

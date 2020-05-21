@@ -81,14 +81,18 @@ const updateJobById = async (req, res) => {
   }
 };
 
-const deleteJobById = async (req, res) => {
+const deleteJobByListId = async (req, res) => {
   try {
-    const deleted = await Job.deleteOne({ _id: req.params.id });
-    res.send(deleted);
+    const list = await List.findOne({ _id: req.params.listId }).exec();
+    const job = list.jobs[req.params.jobArrangement];
+    await Job.deleteOne({ _id: job._id });
+    list.jobs.splice(req.params.jobArrangement, 1);
+    await list.save();
+    res.send({ deleted: job });
   } catch (err) {
     res.status(500);
     res.send(err);
   }
 };
 
-module.exports = { createJob, updateJobById, deleteJobById };
+module.exports = { createJob, updateJobById, deleteJobByListId };

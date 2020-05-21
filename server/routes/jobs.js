@@ -3,6 +3,9 @@ const jobsController = require("../controllers/jobs");
 
 router.post("/", jobsController.createJob);
 router.put("/:id", jobsController.updateJobById);
-router.delete("/:id", jobsController.deleteJobById);
+router.delete(
+  "/:jobArrangement/list/:listId",
+  jobsController.deleteJobByListId
+);
 
 module.exports = router;
