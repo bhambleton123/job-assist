@@ -40,7 +40,7 @@ export default function SearchJobs({
     setAlert(false);
     axios
       .get(
-        `/api/jobs/list?role=${role}&posted=${daysAgo}&page=0&location=${location.replace(
+        `/api/job-search/list?role=${role}&posted=${daysAgo}&page=0&location=${location.replace(
           / /g,
           "+"
         )}&experience=${experience}`
