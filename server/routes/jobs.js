@@ -8,4 +8,9 @@ router.delete(
   jobsController.deleteJobByListId
 );
 
+router.put(
+  "/move/list/:fromList/job/:fromJob/toList/:to",
+  jobsController.moveJob
+);
+
 module.exports = router;

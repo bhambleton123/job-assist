@@ -95,4 +95,24 @@ const deleteJobByListId = async (req, res) => {
   }
 };
 
-module.exports = { createJob, updateJobById, deleteJobByListId };
+const moveJob = async (req, res) => {
+  try {
+    const { fromList, fromJob, to } = req.params;
+    const board = await Board.findOne({ userId: req.user.id, title: "Default" })
+      .populate({
+        path: "lists",
+        populate: { path: "jobs" },
+      })
+      .exec();
+    const job = board.lists[fromList].jobs[fromJob];
+    board.lists[fromList].jobs.splice(fromJob, 1);
+    board.lists[to].jobs.push(job);
+    await board.save();
+    res.send({ Success: board });
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
+};
+
+module.exports = { createJob, updateJobById, deleteJobByListId, moveJob };
