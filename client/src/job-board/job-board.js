@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@material-ui/core";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import List from "./list";
+import Job from "./job";
 import axios from "axios";
 
 export default function JobBoard() {
@@ -29,7 +30,7 @@ export default function JobBoard() {
           return (
             <List title={list.title}>
               {list.jobs.map((job, index) => {
-                return <Typography>{job.title}</Typography>;
+                return <Job title={job.title}></Job>;
               })}
             </List>
           );
