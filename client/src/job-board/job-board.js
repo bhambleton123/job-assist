@@ -28,7 +28,6 @@ export default function JobBoard() {
       if (list._id === source.droppableId) fromListIndex = index;
       if (list._id === destination.droppableId) toListIndex = index;
     });
-    // if (!fromListIndex || !toListIndex) return;
 
     const [job] = updatedBoard.lists[fromListIndex].jobs.splice(
       source.index,
@@ -36,11 +35,31 @@ export default function JobBoard() {
     );
     updatedBoard.lists[toListIndex].jobs.splice(destination.index, 0, job);
     setBoard(updatedBoard);
+
+    axios
+      .put("/api/jobs/move", {
+        from: {
+          job: source.index,
+          list: fromListIndex,
+        },
+        to: {
+          job: destination.index,
+          list: toListIndex,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+        setBoard(board);
+      });
   };
 
   const useStyles = makeStyles({
     draggableJob: {
       margin: "10px 10px 0 10px",
+      height: "100%",
     },
   });
   const classes = useStyles();
