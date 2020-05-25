@@ -97,21 +97,24 @@ const deleteJobByListId = async (req, res) => {
 
 const moveJob = async (req, res) => {
   try {
-    const { fromList, fromJob, to } = req.params;
+    const { from, to } = req.body;
     const board = await Board.findOne({ userId: req.user.id, title: "Default" })
       .populate({
         path: "lists",
         populate: { path: "jobs" },
       })
       .exec();
-    const job = board.lists[fromList].jobs[fromJob];
-    board.lists[fromList].jobs.splice(fromJob, 1);
-    board.lists[to].jobs.push(job);
-    await board.save();
-    res.send({ Success: board });
+    const [job] = board.lists[from.list].jobs.splice(from.job, 1);
+    await board.lists[from.list].markModified("jobs");
+    await board.lists[from.list].save();
+    board.lists[to.list].jobs.splice(to.job, 0, job);
+    await board.lists[to.list].markModified("jobs");
+    await board.lists[to.list].save();
+    const saved = await board.save();
+    res.send(saved);
   } catch (err) {
     res.status(500);
-    res.send(err);
+    res.send({ Error: err });
   }
 };
 
