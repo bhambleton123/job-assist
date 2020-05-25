@@ -32,6 +32,9 @@ export default function JobSearchCard({ title, location, company, link }) {
     addText: {
       fontSize: "60px",
     },
+    addTextButton: {
+      height: "50px",
+    },
   });
   const classes = useStyles();
 
@@ -66,7 +69,7 @@ export default function JobSearchCard({ title, location, company, link }) {
             justifyContent="space-between"
           >
             <Typography className={classes.companyText}>{company}</Typography>
-            <Button>
+            <Button className={classes.addTextButton}>
               <Typography color="secondary" className={classes.addText}>
                 +
               </Typography>
