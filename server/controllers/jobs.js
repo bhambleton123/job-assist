@@ -17,7 +17,7 @@ const createJob = async (req, res) => {
       description,
       userId: req.user.id,
     });
-    const newList = new List({ title: "to-do", userId: req.user.id });
+    let newList = new List({ title: "to-do", userId: req.user.id });
     if (count === 0) {
       const newBoard = new Board({ title: "Default", userId: req.user.id });
       newList.jobs.push(newJob);
@@ -37,10 +37,12 @@ const createJob = async (req, res) => {
         })
         .exec();
       if (lists.length === 0) {
-        newList.push(newJob);
+        newList.jobs.push(newJob);
+        newList.markModified("jobs");
+        await newJob.save();
+        await newList.save();
         boards[0].lists.push(newList);
         await boards[0].save();
-        await newList.save();
       } else {
         lists[0].jobs.push(newJob);
         await newJob.save();
