@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@material-ui/core";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import List from "./list";
 import Job from "./job";
 import axios from "axios";
@@ -28,10 +28,36 @@ export default function JobBoard() {
       <DragDropContext onDragEnd={(result) => console.log(result)}>
         {board.lists.map((list, index) => {
           return (
-            <List title={list.title}>
-              {list.jobs.map((job, index) => {
-                return <Job title={job.title}></Job>;
-              })}
+            <List title={list.title} key={list._id}>
+              <Droppable droppableId={list._id} key={list._id}>
+                {(provided, snapshot) => {
+                  return (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {list.jobs.map((job, index) => {
+                        return (
+                          <Draggable
+                            key={job._id}
+                            draggableId={job._id}
+                            index={index}
+                          >
+                            {(provided, snapshot) => {
+                              return (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  <Job title={job.title} key={job._id}></Job>
+                                </div>
+                              );
+                            }}
+                          </Draggable>
+                        );
+                      })}
+                    </div>
+                  );
+                }}
+              </Droppable>
             </List>
           );
         })}
