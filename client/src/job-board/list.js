@@ -7,7 +7,7 @@ export default function List({ title, children }) {
     list: {
       backgroundColor: theme.palette.secondary.main,
       marginRight: "30px",
-      minHeight: "300px",
+      minHeight: "50vh",
       borderRadius: "5px",
     },
   });

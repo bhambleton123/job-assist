@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import List from "./list";
 import Job from "./job";
@@ -16,6 +16,34 @@ export default function JobBoard() {
       })
       .catch((err) => console.error(err));
   }, []);
+
+  const onDragEnd = (result, board, setBoard) => {
+    if (!result.destination) return;
+    const { destination, source } = result;
+    let updatedBoard = { ...board };
+
+    // Get index of list
+    let fromListIndex, toListIndex;
+    board.lists.forEach((list, index) => {
+      if (list._id === source.droppableId) fromListIndex = index;
+      if (list._id === destination.droppableId) toListIndex = index;
+    });
+    // if (!fromListIndex || !toListIndex) return;
+
+    const [job] = updatedBoard.lists[fromListIndex].jobs.splice(
+      source.index,
+      1
+    );
+    updatedBoard.lists[toListIndex].jobs.splice(destination.index, 0, job);
+    setBoard(updatedBoard);
+  };
+
+  const useStyles = makeStyles({
+    draggableJob: {
+      margin: "10px 10px 0 10px",
+    },
+  });
+  const classes = useStyles();
   return (
     <Box
       width="80%"
@@ -25,7 +53,9 @@ export default function JobBoard() {
       mt="100px"
       ml="100px"
     >
-      <DragDropContext onDragEnd={(result) => console.log(result)}>
+      <DragDropContext
+        onDragEnd={(result) => onDragEnd(result, board, setBoard)}
+      >
         {board.lists.map((list, index) => {
           return (
             <List title={list.title} key={list._id}>
@@ -46,6 +76,8 @@ export default function JobBoard() {
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
+                                  className={classes.draggableJob}
+                                  onClick={() => console.log(job.title)}
                                 >
                                   <Job title={job.title} key={job._id}></Job>
                                 </div>

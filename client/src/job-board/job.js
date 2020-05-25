@@ -11,14 +11,7 @@ export default function Job({ title }) {
   });
   const classes = useStyles();
   return (
-    <Box
-      className={classes.job}
-      pl="10px"
-      pr="10px"
-      ml="10px"
-      mr="10px"
-      mb="10px"
-    >
+    <Box className={classes.job} pl="10px" pr="10px">
       <Typography color="secondary">{title}</Typography>
     </Box>
   );
