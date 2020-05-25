@@ -13,8 +13,8 @@ export default function List({ title, children }) {
   });
   const classes = useStyles();
   return (
-    <Box className={classes.list} width="200px">
-      <Box mt="10px" mb="10px" textAlign="center">
+    <Box className={classes.list} width="225px">
+      <Box pt="10px" pb="10px" textAlign="center">
         <Typography color="primary">{title}</Typography>
       </Box>
       {children}

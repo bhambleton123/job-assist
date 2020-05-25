@@ -61,6 +61,9 @@ export default function JobBoard() {
       margin: "10px 10px 0 10px",
       height: "100%",
     },
+    droppableList: {
+      height: "100%",
+    },
   });
   const classes = useStyles();
   return (
@@ -77,11 +80,11 @@ export default function JobBoard() {
       >
         {board.lists.map((list, index) => {
           return (
-            <List title={list.title} key={list._id}>
-              <Droppable droppableId={list._id} key={list._id}>
-                {(provided, snapshot) => {
-                  return (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
+            <Droppable droppableId={list._id} key={list._id}>
+              {(provided, snapshot) => {
+                return (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    <List title={list.title} key={list._id}>
                       {list.jobs.map((job, index) => {
                         return (
                           <Draggable
@@ -105,11 +108,11 @@ export default function JobBoard() {
                           </Draggable>
                         );
                       })}
-                    </div>
-                  );
-                }}
-              </Droppable>
-            </List>
+                    </List>
+                  </div>
+                );
+              }}
+            </Droppable>
           );
         })}
       </DragDropContext>

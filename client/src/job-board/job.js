@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Typography, makeStyles, useTheme } from "@material-ui/core";
+import renderHTML from "react-render-html";
 
 export default function Job({ title }) {
   const theme = useTheme();
@@ -12,7 +13,7 @@ export default function Job({ title }) {
   const classes = useStyles();
   return (
     <Box className={classes.job} pl="10px" pr="10px">
-      <Typography color="secondary">{title}</Typography>
+      <Typography color="secondary">{renderHTML(title)}</Typography>
     </Box>
   );
 }

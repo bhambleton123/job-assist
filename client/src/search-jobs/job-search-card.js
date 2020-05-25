@@ -9,13 +9,22 @@ import {
   Typography,
   CircularProgress,
 } from "@material-ui/core";
+import CheckIcon from "@material-ui/icons/Check";
 import { useTheme } from "@material-ui/core/styles";
 import renderHTML from "react-render-html";
 import axios from "axios";
 
-export default function JobSearchCard({ title, location, company, link }) {
+export default function JobSearchCard({
+  title,
+  location,
+  company,
+  link,
+  posted,
+}) {
   const [description, setDescription] = useState("");
   const [showSpinner, setShowSpinner] = useState(false);
+  const [showAddJobSpinner, setShowAddJobSpinner] = useState(false);
+  const [addedJobIcon, setAddedJobIcon] = useState(false);
   const theme = useTheme();
   const useStyles = makeStyles({
     root: {
@@ -51,6 +60,23 @@ export default function JobSearchCard({ title, location, company, link }) {
         console.error(err);
       });
   };
+
+  const addJob = () => {
+    setShowAddJobSpinner(true);
+
+    axios
+      .post("/api/jobs", {
+        title,
+        company,
+        location,
+        link,
+        posted,
+      })
+      .then((res) => {
+        setShowAddJobSpinner(false);
+        setAddedJobIcon(true);
+      });
+  };
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -69,11 +95,17 @@ export default function JobSearchCard({ title, location, company, link }) {
             justifyContent="space-between"
           >
             <Typography className={classes.companyText}>{company}</Typography>
-            <Button className={classes.addTextButton}>
-              <Typography color="secondary" className={classes.addText}>
-                +
-              </Typography>
-            </Button>
+            {!showAddJobSpinner && !addedJobIcon ? (
+              <Button onClick={addJob} className={classes.addTextButton}>
+                <Typography color="secondary" className={classes.addText}>
+                  +
+                </Typography>
+              </Button>
+            ) : (
+              ""
+            )}
+            {showAddJobSpinner ? <CircularProgress color="secondary" /> : ""}
+            {addedJobIcon ? <CheckIcon color="secondary" /> : ""}
           </Box>
         </Box>
       </CardContent>

@@ -189,6 +189,7 @@ export default function SearchJobs({
               company={job.company}
               location={job.location}
               link={job.link}
+              posted={job.posted}
             />
           )),
         [jobs]
