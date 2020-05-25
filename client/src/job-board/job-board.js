@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, makeStyles } from "@material-ui/core";
+import { Box, makeStyles, Typography } from "@material-ui/core";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import List from "./list";
 import Job from "./job";
@@ -116,6 +116,13 @@ export default function JobBoard() {
             </Droppable>
           );
         })}
+        {!board.lists.length ? (
+          <Box width="100%" textAlign="center">
+            <Typography>Add a job to get started!</Typography>
+          </Box>
+        ) : (
+          ""
+        )}
       </DragDropContext>
     </Box>
   );
