@@ -60,6 +60,7 @@ export default function JobBoard() {
     draggableJob: {
       margin: "10px 10px 0 10px",
       height: "100%",
+      cursor: "pointer",
     },
     droppableList: {
       height: "100%",
