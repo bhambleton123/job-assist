@@ -124,11 +124,10 @@ export default function JobBoard() {
             <Typography>Add a job to get started!</Typography>
           </Box>
         ) : (
-          ""
+          <Box mr="50px" width="200px">
+            <AddListForm board={board} setBoard={setBoard} />
+          </Box>
         )}
-        <Box mr="50px" width="200px">
-          <AddListForm board={board} setBoard={setBoard} />
-        </Box>
       </DragDropContext>
     </Box>
   );
