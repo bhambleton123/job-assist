@@ -3,6 +3,7 @@ import { Box, makeStyles, Typography } from "@material-ui/core";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import List from "./list";
 import Job from "./job";
+import AddListForm from "./add-list-form";
 import axios from "axios";
 
 export default function JobBoard() {
@@ -84,33 +85,35 @@ export default function JobBoard() {
             <Droppable droppableId={list._id} key={list._id}>
               {(provided, snapshot) => {
                 return (
-                  <div {...provided.droppableProps} ref={provided.innerRef}>
-                    <List title={list.title} key={list._id}>
-                      {list.jobs.map((job, index) => {
-                        return (
-                          <Draggable
-                            key={job._id}
-                            draggableId={job._id}
-                            index={index}
-                          >
-                            {(provided, snapshot) => {
-                              return (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  className={classes.draggableJob}
-                                  onClick={() => console.log(job.title)}
-                                >
-                                  <Job title={job.title} key={job._id}></Job>
-                                </div>
-                              );
-                            }}
-                          </Draggable>
-                        );
-                      })}
-                    </List>
-                  </div>
+                  <>
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      <List title={list.title} key={list._id}>
+                        {list.jobs.map((job, index) => {
+                          return (
+                            <Draggable
+                              key={job._id}
+                              draggableId={job._id}
+                              index={index}
+                            >
+                              {(provided, snapshot) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className={classes.draggableJob}
+                                    onClick={() => console.log(job.title)}
+                                  >
+                                    <Job title={job.title} key={job._id}></Job>
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                      </List>
+                    </div>
+                  </>
                 );
               }}
             </Droppable>
@@ -123,6 +126,7 @@ export default function JobBoard() {
         ) : (
           ""
         )}
+        <AddListForm board={board} setBoard={setBoard} />
       </DragDropContext>
     </Box>
   );
