@@ -27,6 +27,7 @@ const createJob = async (req, res) => {
       await newJob.save();
       res.send(newBoard);
     } else {
+      const listCount = await List.countDocuments({ userId: req.user.id });
       const lists = await List.find({ userId: req.user.id })
         .populate("jobs")
         .exec();
@@ -36,7 +37,7 @@ const createJob = async (req, res) => {
           populate: { path: "jobs" },
         })
         .exec();
-      if (lists.length === 0) {
+      if (listCount) {
         newList.jobs.push(newJob);
         newList.markModified("jobs");
         await newJob.save();
