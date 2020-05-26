@@ -86,33 +86,40 @@ export default function JobBoard() {
               {(provided, snapshot) => {
                 return (
                   <>
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
-                      <List title={list.title} key={list._id}>
-                        {list.jobs.map((job, index) => {
-                          return (
-                            <Draggable
-                              key={job._id}
-                              draggableId={job._id}
-                              index={index}
-                            >
-                              {(provided, snapshot) => {
-                                return (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className={classes.draggableJob}
-                                    onClick={() => console.log(job.title)}
-                                  >
-                                    <Job title={job.title} key={job._id}></Job>
-                                  </div>
-                                );
-                              }}
-                            </Draggable>
-                          );
-                        })}
-                      </List>
-                    </div>
+                    <List
+                      {...provided.droppableProps}
+                      innerRef={provided.innerRef}
+                      title={list.title}
+                      key={list._id}
+                    >
+                      {list.jobs.map((job, index) => {
+                        return (
+                          <Draggable
+                            key={job._id}
+                            draggableId={job._id}
+                            index={index}
+                          >
+                            {(provided, snapshot) => {
+                              return (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  style={{
+                                    userSelect: "none",
+                                    margin: "0 10px 10px 10px",
+                                    ...provided.draggableProps.style,
+                                  }}
+                                  onClick={() => console.log(job.title)}
+                                >
+                                  <Job title={job.title} key={job._id}></Job>
+                                </div>
+                              );
+                            }}
+                          </Draggable>
+                        );
+                      })}
+                    </List>
                   </>
                 );
               }}
