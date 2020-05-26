@@ -23,9 +23,13 @@ export default function AddListForm({ board, setBoard }) {
       marginLeft: "5px",
       marginRight: "5px",
     },
+    input: {
+      width: "225px",
+    },
   });
 
   const submit = () => {
+    if (!input.length) return;
     axios
       .post("/api/lists", { title: input })
       .then((res) => {
@@ -39,6 +43,7 @@ export default function AddListForm({ board, setBoard }) {
   return (
     <Paper className={classes.form} component="form">
       <InputBase
+        className={classes.input}
         placeholder="New list"
         onChange={(e) => setInput(e.target.value)}
       />

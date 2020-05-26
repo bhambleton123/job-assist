@@ -126,7 +126,9 @@ export default function JobBoard() {
         ) : (
           ""
         )}
-        <AddListForm board={board} setBoard={setBoard} />
+        <Box mr="50px" width="200px">
+          <AddListForm board={board} setBoard={setBoard} />
+        </Box>
       </DragDropContext>
     </Box>
   );

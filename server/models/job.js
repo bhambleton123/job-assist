@@ -9,6 +9,7 @@ const jobSchema = new Schema({
   posted: String,
   description: String,
   userId: String,
+  listId: String,
 });
 
 const Job = mongoose.model("Job", jobSchema);
