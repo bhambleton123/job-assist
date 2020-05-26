@@ -37,7 +37,7 @@ const createJob = async (req, res) => {
           populate: { path: "jobs" },
         })
         .exec();
-      if (listCount) {
+      if (!listCount) {
         newList.jobs.push(newJob);
         newList.markModified("jobs");
         await newJob.save();
