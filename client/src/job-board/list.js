@@ -12,10 +12,8 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from "axios";
 
-export default function List(
-  { listId, title, setBoard, innerRef, isDragging, children },
-  props
-) {
+export default function List(props) {
+  const { listId, title, setBoard, innerRef, isDragging, children } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [changedTitle, setChangedTitle] = useState(title);
   const [showEditInput, setShowEditInput] = useState(false);

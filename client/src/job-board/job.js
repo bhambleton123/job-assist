@@ -17,9 +17,18 @@ export default function Job(props) {
       marginLeft: "10px",
     },
   });
+
+  const handleJobClick = () => {
+    console.log(props.title);
+  };
   const classes = useStyles();
   return (
-    <div className={classes.job} {...props} ref={props.innerRef}>
+    <div
+      className={classes.job}
+      onClick={handleJobClick}
+      {...props}
+      ref={props.innerRef}
+    >
       <Typography color="secondary">{renderHTML(props.title)}</Typography>
       <Typography className={classes.company} color="secondary">
         {props.company}
