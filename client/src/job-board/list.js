@@ -7,6 +7,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Input,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from "axios";
@@ -16,7 +17,8 @@ export default function List(
   props
 ) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [changedTitle, setChangedTitle] = useState(title);
+  const [showEditInput, setShowEditInput] = useState(false);
   const theme = useTheme();
   const useStyles = makeStyles({
     list: {
@@ -28,10 +30,14 @@ export default function List(
     jobs: {
       height: "100%",
     },
+    changeTitle: {
+      color: theme.palette.primary.main,
+    },
   });
   const classes = useStyles();
 
   const handleMenuClick = (index) => {
+    if (index === 0) setShowEditInput(true);
     if (index === 1) {
       axios
         .delete(`/api/lists/${listId}`)
@@ -41,6 +47,20 @@ export default function List(
         .catch((err) => console.error(err));
     }
     setAnchorEl(null);
+  };
+
+  const updateTitle = (e) => {
+    if (e.key === "Enter") {
+      setShowEditInput(false);
+      axios
+        .put(`/api/lists/${listId}`, {
+          title: changedTitle,
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => console.error(err));
+    }
   };
   return (
     <Box className={classes.list} width="225px">
@@ -53,7 +73,17 @@ export default function List(
         flexDirection="column"
       >
         <Box textAlign="center" width="100%">
-          <Typography color="primary">{title}</Typography>
+          {!showEditInput ? (
+            <Typography color="primary">{changedTitle}</Typography>
+          ) : (
+            <Input
+              className={classes.changeTitle}
+              value={changedTitle}
+              onChange={(e) => setChangedTitle(e.target.value)}
+              onKeyDown={updateTitle}
+              variant="filled"
+            />
+          )}
         </Box>
         <IconButton
           onClick={(e) => setAnchorEl(e.currentTarget)}
