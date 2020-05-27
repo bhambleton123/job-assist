@@ -1,9 +1,10 @@
 import React from "react";
+import { Box, Typography } from "@material-ui/core";
 
 export default function Dashboard() {
   return (
-    <div>
-      <p>Welcome to the dashboard!</p>
-    </div>
+    <Box textAlign="center" width="100%">
+      <Typography>Welcome to the dashboard!</Typography>
+    </Box>
   );
 }
