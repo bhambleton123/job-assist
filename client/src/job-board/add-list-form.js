@@ -47,6 +47,11 @@ export default function AddListForm({ board, setBoard }) {
         value={input}
         placeholder="New list"
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            submit();
+          }
+        }}
       />
       <Divider orientation="vertical" />
       <IconButton onClick={submit} className={classes.icon}>
