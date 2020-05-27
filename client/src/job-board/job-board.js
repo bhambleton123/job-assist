@@ -102,7 +102,11 @@ export default function JobBoard() {
                                   }}
                                   onClick={() => console.log(job.title)}
                                 >
-                                  <Job title={job.title} key={job._id}></Job>
+                                  <Job
+                                    title={job.title}
+                                    company={job.company}
+                                    key={job._id}
+                                  ></Job>
                                 </div>
                               );
                             }}
