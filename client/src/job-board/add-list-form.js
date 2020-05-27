@@ -44,6 +44,7 @@ export default function AddListForm({ board, setBoard }) {
     <Paper className={classes.form} component="form">
       <InputBase
         className={classes.input}
+        value={input}
         placeholder="New list"
         onChange={(e) => setInput(e.target.value)}
       />

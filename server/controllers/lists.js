@@ -86,6 +86,7 @@ const deleteList = async (req, res) => {
       })
         .populate({ path: "lists", populate: { path: "jobs" } })
         .exec();
+      await List.deleteOne({ _id: list._id }).exec();
       res.send(updatedBoard);
     }
   } catch (err) {

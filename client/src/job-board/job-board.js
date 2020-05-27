@@ -75,6 +75,8 @@ export default function JobBoard() {
                 return (
                   <>
                     <List
+                      listId={list._id}
+                      setBoard={setBoard}
                       {...provided.droppableProps}
                       innerRef={provided.innerRef}
                       title={list.title}
