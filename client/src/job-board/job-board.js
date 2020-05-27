@@ -57,20 +57,8 @@ export default function JobBoard() {
       });
   };
 
-  const useStyles = makeStyles({
-    draggableJob: {
-      margin: "10px 10px 0 10px",
-      height: "100%",
-      cursor: "pointer",
-    },
-    droppableList: {
-      height: "100%",
-    },
-  });
-  const classes = useStyles();
   return (
     <Box
-      width="80%"
       height="100%"
       display="flex"
       justifyContent="flex-start"
