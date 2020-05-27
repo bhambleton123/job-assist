@@ -2,12 +2,14 @@ import React from "react";
 import { Box, Typography, makeStyles, useTheme } from "@material-ui/core";
 import renderHTML from "react-render-html";
 
-export default function Job({ title, company }) {
+export default function Job(props) {
   const theme = useTheme();
   const useStyles = makeStyles({
     job: {
       backgroundColor: theme.palette.primaryTwo.main,
       borderRadius: "5px",
+      padding: "0 10px 0 10px",
+      margin: "0 10px 10px 10px",
     },
     company: {
       fontSize: "13px",
@@ -17,11 +19,11 @@ export default function Job({ title, company }) {
   });
   const classes = useStyles();
   return (
-    <Box className={classes.job} pl="10px" pr="10px">
-      <Typography color="secondary">{renderHTML(title)}</Typography>
+    <div className={classes.job} {...props} ref={props.innerRef}>
+      <Typography color="secondary">{renderHTML(props.title)}</Typography>
       <Typography className={classes.company} color="secondary">
-        {company}
+        {props.company}
       </Typography>
-    </Box>
+    </div>
   );
 }

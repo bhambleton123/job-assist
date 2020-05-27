@@ -92,23 +92,14 @@ export default function JobBoard() {
                           >
                             {(provided, snapshot) => {
                               return (
-                                <div
-                                  ref={provided.innerRef}
+                                <Job
+                                  title={job.title}
+                                  company={job.company}
+                                  key={job._id}
+                                  innerRef={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  style={{
-                                    userSelect: "none",
-                                    margin: "0 10px 10px 10px",
-                                    ...provided.draggableProps.style,
-                                  }}
-                                  onClick={() => console.log(job.title)}
-                                >
-                                  <Job
-                                    title={job.title}
-                                    company={job.company}
-                                    key={job._id}
-                                  ></Job>
-                                </div>
+                                ></Job>
                               );
                             }}
                           </Draggable>
