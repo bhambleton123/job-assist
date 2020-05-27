@@ -4,11 +4,6 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3001;
 const cors = require("cors");
-const jobSearch = require("./routes/job-search");
-const auth = require("./routes/auth");
-const lists = require("./routes/lists");
-const boards = require("./routes/boards");
-const jobs = require("./routes/jobs");
 const passport = require("./auth/passport");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -59,6 +54,12 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+const jobSearch = require("./routes/job-search");
+const auth = require("./routes/auth");
+const lists = require("./routes/lists");
+const boards = require("./routes/boards");
+const jobs = require("./routes/jobs");
 
 app.use("/api/auth", auth);
 app.use("/api/job-search", jobSearch);
