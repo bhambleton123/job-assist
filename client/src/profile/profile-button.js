@@ -8,6 +8,7 @@ export default function ProfileButton({ setUser, profilePic }) {
       width: "45px",
       height: "45px",
       borderRadius: "30px 30px",
+      float: "right",
     },
     menu: {
       paddingTop: "100px",
