@@ -77,6 +77,7 @@ export default function JobBoard() {
                     <List
                       listId={list._id}
                       setBoard={setBoard}
+                      isDragging={snapshot.isDraggingOver}
                       {...provided.droppableProps}
                       innerRef={provided.innerRef}
                       title={list.title}

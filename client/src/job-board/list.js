@@ -13,7 +13,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from "axios";
 
 export default function List(
-  { listId, title, setBoard, innerRef, children },
+  { listId, title, setBoard, innerRef, isDragging, children },
   props
 ) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -22,7 +22,7 @@ export default function List(
   const theme = useTheme();
   const useStyles = makeStyles({
     list: {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: !isDragging ? theme.palette.secondary.main : "#9e8686",
       marginRight: "30px",
       minHeight: "70vh",
       borderRadius: "5px",
