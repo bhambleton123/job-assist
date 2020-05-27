@@ -12,6 +12,7 @@ export default function Job({ title, company }) {
     company: {
       fontSize: "13px",
       color: "#9e8686",
+      marginLeft: "10px",
     },
   });
   const classes = useStyles();
