@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@material-ui/core";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import List from "./list";
-import Job from "./job";
+import Job from "./job/job";
 import AddListForm from "./add-list-form";
 import axios from "axios";
 
@@ -95,6 +95,7 @@ export default function JobBoard() {
                                 <Job
                                   title={job.title}
                                   company={job.company}
+                                  description={job.description}
                                   key={job._id}
                                   innerRef={provided.innerRef}
                                   {...provided.draggableProps}

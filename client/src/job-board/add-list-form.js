@@ -9,7 +9,7 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import axios from "axios";
 
-export default function AddListForm({ board, setBoard }) {
+export default function AddListForm({ setBoard }) {
   const [input, setInput] = useState("");
   const useStyles = makeStyles({
     form: {
