@@ -1,6 +1,7 @@
 const Job = require("../models/job").Job;
 const List = require("../models/list").List;
 const Board = require("../models/board").Board;
+const CoverLetter = require("../models/coverLetter").CoverLetter;
 const scrapeIndeedJobDescription = require("../util/scrapers")
   .scrapeIndeedJobDescription;
 
@@ -57,6 +58,21 @@ const createJob = async (req, res) => {
         .exec();
       res.send(boards);
     }
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
+};
+
+const addCoverLetterToJob = async (req, res) => {
+  const { jobId } = req.params;
+  const { title, body } = req.body;
+  try {
+    const coverLetter = new CoverLetter({ title, body, userId: req.user.id });
+    const job = await Job.findById(jobId).exec();
+    job.coverLetters.push(coverLetter);
+    await job.save();
+    res.send(job);
   } catch (err) {
     res.status(500);
     res.send(err);
@@ -121,4 +137,10 @@ const moveJob = async (req, res) => {
   }
 };
 
-module.exports = { createJob, updateJobById, deleteJobByListId, moveJob };
+module.exports = {
+  createJob,
+  updateJobById,
+  addCoverLetterToJob,
+  deleteJobByListId,
+  moveJob,
+};
