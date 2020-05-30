@@ -7,6 +7,7 @@ export default function JobModal({
   company,
   description,
   link,
+  location,
   showModal,
   setShowModal,
 }) {
@@ -29,6 +30,7 @@ export default function JobModal({
         company={company}
         description={description}
         link={link}
+        location={location}
       />
     </Modal>
   );

@@ -44,6 +44,7 @@ export default function Job(props) {
           company={props.company}
           description={props.description}
           link={props.link}
+          location={props.location}
           showModal={showModal}
           setShowModal={setShowModal}
         />

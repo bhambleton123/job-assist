@@ -8,7 +8,13 @@ import {
 } from "@material-ui/core";
 import renderHTML from "react-render-html";
 
-export default function JobDetails({ title, company, description, link }) {
+export default function JobDetails({
+  title,
+  company,
+  description,
+  link,
+  location,
+}) {
   const theme = useTheme();
   const useStyles = makeStyles({
     paper: {
@@ -25,6 +31,7 @@ export default function JobDetails({ title, company, description, link }) {
     <Paper className={classes.paper}>
       <Typography>{renderHTML(title)}</Typography>
       <Typography>{company}</Typography>
+      <Typography>{"Location: " + location}</Typography>
       <Box>{renderHTML(description)}</Box>
       <Box
         display="flex"

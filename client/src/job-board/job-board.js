@@ -97,6 +97,7 @@ export default function JobBoard() {
                                   company={job.company}
                                   description={job.description}
                                   link={job.link}
+                                  location={job.location}
                                   key={job._id}
                                   innerRef={provided.innerRef}
                                   {...provided.draggableProps}
