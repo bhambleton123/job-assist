@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -72,7 +72,7 @@ export default function List(props) {
       >
         <Box textAlign="center" width="100%">
           {!showEditInput ? (
-            <Typography color="primary">{changedTitle}</Typography>
+            <Typography onClick={() => setShowEditInput(true)} color="primary">{changedTitle}</Typography>
           ) : (
             <Input
               className={classes.changeTitle}
