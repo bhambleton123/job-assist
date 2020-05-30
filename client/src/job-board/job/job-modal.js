@@ -28,6 +28,7 @@ export default function JobModal({
       width: "50vw",
       height: "100%",
       overflow: "scroll",
+      padding: "50px",
       color: theme.palette.secondary.main,
     },
   });
