@@ -1,35 +1,20 @@
 import React from "react";
-import {
-  makeStyles,
-  Box,
-  Paper,
-  Typography,
-  Modal,
-  useTheme,
-} from "@material-ui/core";
-import renderHTML from "react-render-html";
+import { makeStyles, Modal } from "@material-ui/core";
+import JobDetails from "./job-details";
 
 export default function JobModal({
   title,
   company,
   description,
+  link,
   showModal,
   setShowModal,
 }) {
-  const theme = useTheme();
   const useStyles = makeStyles({
     modal: {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-    },
-    paper: {
-      position: "absolute",
-      width: "50vw",
-      height: "100%",
-      overflow: "scroll",
-      padding: "50px",
-      color: theme.palette.secondary.main,
     },
   });
   const classes = useStyles();
@@ -39,11 +24,12 @@ export default function JobModal({
       open={showModal}
       onClose={() => setShowModal(false)}
     >
-      <Paper className={classes.paper}>
-        <Typography>{renderHTML(title)}</Typography>
-        <Typography>{company}</Typography>
-        <Box>{renderHTML(description)}</Box>
-      </Paper>
+      <JobDetails
+        title={title}
+        company={company}
+        description={description}
+        link={link}
+      />
     </Modal>
   );
 }
