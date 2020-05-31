@@ -79,6 +79,45 @@ const addCoverLetterToJob = async (req, res) => {
   }
 };
 
+const updateCoverLetterOnJob = async (req, res) => {
+  const { title, body } = req.body;
+  const { jobId, coverLetterId } = req.params;
+
+  try {
+    const job = await Job.findOneAndUpdate(
+      {
+        _id: jobId,
+        "coverLetters._id": coverLetterId,
+      },
+      {
+        $set: {
+          "coverLetters.$.title": title,
+          "coverLetters.$.body": body,
+        },
+      },
+      {
+        omitUndefined: true,
+        useFindAndModify: false,
+      }
+    );
+    const board = await Board.findOne({
+      userId: req.user.id,
+      title: "Default",
+    })
+      .populate({
+        path: "lists",
+        populate: {
+          path: "jobs",
+        },
+      })
+      .exec();
+    res.send(board);
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
+};
+
 const updateJobById = async (req, res) => {
   try {
     const updated = await Job.updateOne(
@@ -140,6 +179,7 @@ const moveJob = async (req, res) => {
 module.exports = {
   createJob,
   updateJobById,
+  updateCoverLetterOnJob,
   addCoverLetterToJob,
   deleteJobByListId,
   moveJob,
