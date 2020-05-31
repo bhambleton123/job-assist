@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const coverLetterSchema = require("./coverLetter").coverLetterSchema;
 
 const jobSchema = new Schema({
   title: String,
@@ -8,6 +9,7 @@ const jobSchema = new Schema({
   link: String,
   posted: String,
   description: String,
+  coverLetters: [coverLetterSchema],
   userId: String,
   listId: String,
 });

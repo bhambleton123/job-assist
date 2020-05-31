@@ -60,12 +60,14 @@ const auth = require("./routes/auth");
 const lists = require("./routes/lists");
 const boards = require("./routes/boards");
 const jobs = require("./routes/jobs");
+const user = require("./routes/user");
 
 app.use("/api/auth", auth);
 app.use("/api/job-search", jobSearch);
 app.use("/api/lists", lists);
 app.use("/api/jobs", jobs);
 app.use("/api/boards", boards);
+app.use("/api/user", user);
 
 app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "../client/build/index.html"))

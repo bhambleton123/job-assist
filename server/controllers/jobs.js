@@ -1,6 +1,7 @@
 const Job = require("../models/job").Job;
 const List = require("../models/list").List;
 const Board = require("../models/board").Board;
+const CoverLetter = require("../models/coverLetter").CoverLetter;
 const scrapeIndeedJobDescription = require("../util/scrapers")
   .scrapeIndeedJobDescription;
 
@@ -57,6 +58,85 @@ const createJob = async (req, res) => {
         .exec();
       res.send(boards);
     }
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
+};
+
+const addCoverLetterToJob = async (req, res) => {
+  const { jobId } = req.params;
+  const { title, body } = req.body;
+  try {
+    const coverLetter = new CoverLetter({ title, body, userId: req.user.id });
+    const job = await Job.findById(jobId).exec();
+    job.coverLetters.push(coverLetter);
+    await job.save();
+    res.send(job);
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
+};
+
+const updateCoverLetterOnJob = async (req, res) => {
+  const { title, body } = req.body;
+  const { jobId, coverLetterId } = req.params;
+
+  try {
+    const job = await Job.findOneAndUpdate(
+      {
+        _id: jobId,
+        "coverLetters._id": coverLetterId,
+      },
+      {
+        $set: {
+          "coverLetters.$.title": title,
+          "coverLetters.$.body": body,
+        },
+      },
+      {
+        omitUndefined: true,
+        useFindAndModify: false,
+      }
+    );
+    const board = await Board.findOne({
+      userId: req.user.id,
+      title: "Default",
+    })
+      .populate({
+        path: "lists",
+        populate: {
+          path: "jobs",
+        },
+      })
+      .exec();
+    res.send(board);
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
+};
+
+const deleteCoverLetterOnJob = async (req, res) => {
+  const { jobId, coverLetterId } = req.params;
+
+  try {
+    const job = await Job.findById(jobId).exec();
+    job.coverLetters.id(coverLetterId).remove();
+    await job.save();
+    const board = await Board.findOne({
+      userId: req.user.id,
+      title: "Default",
+    })
+      .populate({
+        path: "lists",
+        populate: {
+          path: "jobs",
+        },
+      })
+      .exec();
+    res.send(board);
   } catch (err) {
     res.status(500);
     res.send(err);
@@ -121,4 +201,12 @@ const moveJob = async (req, res) => {
   }
 };
 
-module.exports = { createJob, updateJobById, deleteJobByListId, moveJob };
+module.exports = {
+  createJob,
+  updateJobById,
+  updateCoverLetterOnJob,
+  addCoverLetterToJob,
+  deleteCoverLetterOnJob,
+  deleteJobByListId,
+  moveJob,
+};
