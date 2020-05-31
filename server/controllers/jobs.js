@@ -118,6 +118,31 @@ const updateCoverLetterOnJob = async (req, res) => {
   }
 };
 
+const deleteCoverLetterOnJob = async (req, res) => {
+  const { jobId, coverLetterId } = req.params;
+
+  try {
+    const job = await Job.findById(jobId).exec();
+    job.coverLetters.id(coverLetterId).remove();
+    await job.save();
+    const board = await Board.findOne({
+      userId: req.user.id,
+      title: "Default",
+    })
+      .populate({
+        path: "lists",
+        populate: {
+          path: "jobs",
+        },
+      })
+      .exec();
+    res.send(board);
+  } catch (err) {
+    res.status(500);
+    res.send(err);
+  }
+};
+
 const updateJobById = async (req, res) => {
   try {
     const updated = await Job.updateOne(
@@ -181,6 +206,7 @@ module.exports = {
   updateJobById,
   updateCoverLetterOnJob,
   addCoverLetterToJob,
+  deleteCoverLetterOnJob,
   deleteJobByListId,
   moveJob,
 };

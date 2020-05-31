@@ -8,6 +8,10 @@ router.put(
   "/:jobId/cover-letter/:coverLetterId",
   jobsController.updateCoverLetterOnJob
 );
+router.delete(
+  "/:jobId/cover-letter/:coverLetterId",
+  jobsController.deleteCoverLetterOnJob
+);
 router.put("/:id", jobsController.updateJobById);
 router.delete(
   "/:jobArrangement/list/:listId",
