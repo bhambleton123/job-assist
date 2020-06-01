@@ -71,8 +71,10 @@ export const addCoverLetterToJob = async (req: IAuthRequest, res: Response) => {
   try {
     const coverLetter = new CoverLetter({ title, body, userId: req.user.id });
     const job = await Job.findById(jobId).exec();
-    job.coverLetters.push(coverLetter);
-    await job.save();
+    if (job) {
+      job.coverLetters.push(coverLetter);
+      await job.save();
+    }
     res.send(job);
   } catch (err) {
     res.status(500);
@@ -88,7 +90,7 @@ export const updateCoverLetterOnJob = async (
   const { jobId, coverLetterId } = req.params;
 
   try {
-    const job = await Job.findOneAndUpdate(
+    await Job.findOneAndUpdate(
       {
         _id: jobId,
         "coverLetters._id": coverLetterId,
@@ -130,20 +132,27 @@ export const deleteCoverLetterOnJob = async (
 
   try {
     const job = await Job.findById(jobId).exec();
-    job.coverLetters.id(coverLetterId).remove();
-    await job.save();
-    const board = await Board.findOne({
-      userId: req.user.id,
-      title: "Default",
-    })
-      .populate({
-        path: "lists",
-        populate: {
-          path: "jobs",
-        },
+    if (job) {
+      //what are you trying to do here? Is this it?
+      for (var i = 0; i < job.coverLetters.length; i++) {
+        if (job.coverLetters[i].id === coverLetterId) {
+          job.coverLetters[i].remove();
+        }
+      }
+      await job.save();
+      const board = await Board.findOne({
+        userId: req.user.id,
+        title: "Default",
       })
-      .exec();
-    res.send(board);
+        .populate({
+          path: "lists",
+          populate: {
+            path: "jobs",
+          },
+        })
+        .exec();
+      res.send(board);
+    }
   } catch (err) {
     res.status(500);
     res.send(err);
@@ -175,11 +184,15 @@ export const updateJobById = async (req: IAuthRequest, res: Response) => {
 export const deleteJobByListId = async (req: IAuthRequest, res: Response) => {
   try {
     const list = await List.findOne({ _id: req.params.listId }).exec();
-    const job = list.jobs[req.params.jobArrangement];
-    await Job.deleteOne({ _id: job._id });
-    list.jobs.splice(req.params.jobArrangement, 1);
-    await list.save();
-    res.send({ deleted: job });
+    if (list) {
+      if (typeof req.params.jobArrangement == "number") {
+        const job = list.jobs[req.params.jobArrangement];
+        await Job.deleteOne({ _id: job._id });
+        list.jobs.splice(req.params.jobArrangement, 1);
+        await list.save();
+        res.send({ deleted: job });
+      }
+    }
   } catch (err) {
     res.status(500);
     res.send(err);
@@ -195,14 +208,16 @@ export const moveJob = async (req: IAuthRequest, res: Response) => {
         populate: { path: "jobs" },
       })
       .exec();
-    const [job] = board.lists[from.list].jobs.splice(from.job, 1);
-    await board.lists[from.list].markModified("jobs");
-    await board.lists[from.list].save();
-    board.lists[to.list].jobs.splice(to.job, 0, job);
-    await board.lists[to.list].markModified("jobs");
-    await board.lists[to.list].save();
-    const saved = await board.save();
-    res.send(saved);
+    if (board) {
+      const [job] = board.lists[from.list].jobs.splice(from.job, 1);
+      await board.lists[from.list].markModified("jobs");
+      await board.lists[from.list].save();
+      board.lists[to.list].jobs.splice(to.job, 0, job);
+      await board.lists[to.list].markModified("jobs");
+      await board.lists[to.list].save();
+      const saved = await board.save();
+      res.send(saved);
+    }
   } catch (err) {
     res.status(500);
     res.send({ Error: err });

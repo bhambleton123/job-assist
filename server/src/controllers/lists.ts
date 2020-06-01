@@ -14,7 +14,7 @@ export const createList = async (req: IAuthRequest, res: Response) => {
       const board = new Board({ userId: req.user.id, title: "Default" });
       await board.save();
     }
-    const board = await Board.findOne({
+    const board: any = await Board.findOne({
       userId: req.user.id,
       title: "Default",
     }).exec();
@@ -58,22 +58,22 @@ export const updateList = async (req: IAuthRequest, res: Response) => {
 export const deleteList = async (req: IAuthRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const list = await List.findOne({ _id: id }).populate("jobs").exec();
-    const board = await Board.findOne({
+    const list: any = await List.findOne({ _id: id }).populate("jobs").exec();
+    const board: any = await Board.findOne({
       userId: req.user.id,
       title: "Default",
     })
       .populate("lists")
       .exec();
     let listIndex = null;
-    board.lists.forEach((list, index) => {
+    board.lists.forEach((list: any, index: any) => {
       if (list._id.toString() === id) listIndex = index;
     });
     if (listIndex === null) {
       res.status(400);
       res.send({ error: "Could not find list by id" });
     } else {
-      const jobIds = list.jobs.map((job) => job._id);
+      const jobIds = list.jobs.map((job: any) => job._id);
       await Job.deleteMany({
         _id: {
           $in: jobIds,
