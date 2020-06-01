@@ -29,7 +29,7 @@ db.once("open", function () {
   console.log("connected to mongodb");
 });
 
-app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.static(path.join(__dirname, "../../client/build")));
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -69,7 +69,7 @@ app.use("/api/boards", boards);
 app.use("/api/user", user);
 
 app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "../client/build/index.html"))
+  res.sendFile(path.join(__dirname, "../../client/build/index.html"))
 );
 
 app.listen(port, () => {
