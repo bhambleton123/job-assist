@@ -1,2 +1,5 @@
-/node_modules
+node_modules/
+dist/
 .env
+    "concurrently": "^5.2.0",",
+    "tsc": "^1.20150623.0
