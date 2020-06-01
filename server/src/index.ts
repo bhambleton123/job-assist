@@ -1,27 +1,26 @@
-require("dotenv").config();
-const express = require("express");
-const path = require("path");
+import * as dotenv from "dotenv";
+dotenv.config();
+import express from "express";
+import path from "path";
 const app = express();
 const port = process.env.PORT || 3001;
-const cors = require("cors");
-const passport = require("./auth/passport");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
-const redisClient = require("./util/caching/redis-client");
-const redisStore = require("connect-redis")(session);
-const mongoose = require("mongoose");
-const EventEmitter = require("events");
-
-const ee = new EventEmitter();
-ee.setMaxListeners(30);
+import cors from "cors";
+import passport from "./auth/passport";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import redisClient from "./util/caching/redis-client";
+import connectRedis from "connect-redis";
+const redisStore = connectRedis(session);
+import mongoose from "mongoose";
 
 redisClient.on("error", (err) => {
   console.log(`Redis error: ${err}`);
 });
 
 mongoose.connect(
-  process.env.DEV_DATABASE_URL || process.env.PROD_DATABASE_URL,
+  (process.env.DEV_DATABASE_URL as string) ||
+    (process.env.PROD_DATABASE_URL as string),
   { useNewUrlParser: true, useUnifiedTopology: true }
 );
 const db = mongoose.connection;
@@ -45,7 +44,7 @@ app.use(
       client: redisClient,
       ttl: 604800,
     }),
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 },
@@ -55,12 +54,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-const jobSearch = require("./routes/job-search");
-const auth = require("./routes/auth");
-const lists = require("./routes/lists");
-const boards = require("./routes/boards");
-const jobs = require("./routes/jobs");
-const user = require("./routes/user");
+import jobSearch from "./routes/job-search";
+import auth from "./routes/auth";
+import lists from "./routes/lists";
+import boards from "./routes/boards";
+import jobs from "./routes/jobs";
+import user from "./routes/user";
 
 app.use("/api/auth", auth);
 app.use("/api/job-search", jobSearch);

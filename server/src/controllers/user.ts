@@ -1,6 +1,8 @@
-const CoverLetter = require("../models/coverLetter").CoverLetter;
+import { CoverLetter } from "../models/coverLetter/coverLetter";
+import { IAuthRequest } from "../auth/auth-request.interface";
+import { Response } from "express";
 
-const getCoverLetters = async (req, res) => {
+export const getCoverLetters = async (req: IAuthRequest, res: Response) => {
   try {
     const coverLetters = await CoverLetter.find({
       userId: req.user.id,
@@ -12,7 +14,7 @@ const getCoverLetters = async (req, res) => {
   }
 };
 
-const createCoverLetter = async (req, res) => {
+export const createCoverLetter = async (req: IAuthRequest, res: Response) => {
   try {
     const { title, body } = req.body;
     const coverLetter = new CoverLetter({
@@ -28,7 +30,7 @@ const createCoverLetter = async (req, res) => {
   }
 };
 
-const updateCoverLetter = async (req, res) => {
+export const updateCoverLetter = async (req: IAuthRequest, res: Response) => {
   const { coverLetterId } = req.params;
   const { title, body } = req.body;
   try {
@@ -43,7 +45,7 @@ const updateCoverLetter = async (req, res) => {
       {
         omitUndefined: true,
         useFindAndModify: false,
-      }
+      } as any
     );
 
     const coverLetter = await CoverLetter.findById(coverLetterId).exec();
@@ -54,7 +56,7 @@ const updateCoverLetter = async (req, res) => {
   }
 };
 
-const deleteCoverLetter = async (req, res) => {
+export const deleteCoverLetter = async (req: IAuthRequest, res: Response) => {
   const { coverLetterId } = req.params;
 
   try {
@@ -67,11 +69,4 @@ const deleteCoverLetter = async (req, res) => {
     res.status(500);
     res.send(err);
   }
-};
-
-module.exports = {
-  getCoverLetters,
-  createCoverLetter,
-  updateCoverLetter,
-  deleteCoverLetter,
 };

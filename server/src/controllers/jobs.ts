@@ -1,11 +1,12 @@
-const Job = require("../models/job").Job;
-const List = require("../models/list").List;
-const Board = require("../models/board").Board;
-const CoverLetter = require("../models/coverLetter").CoverLetter;
-const scrapeIndeedJobDescription = require("../util/scrapers")
-  .scrapeIndeedJobDescription;
+import { Job } from "../models/job/job";
+import { List } from "../models/list/list";
+import { Board } from "../models/board/board";
+import { CoverLetter } from "../models/coverLetter/coverLetter";
+import { scrapeIndeedJobDescription } from "../util/scrapers";
+import { Response } from "express";
+import { IAuthRequest } from "../auth/auth-request.interface";
 
-const createJob = async (req, res) => {
+export const createJob = async (req: IAuthRequest, res: Response) => {
   try {
     const count = await Board.countDocuments({ userId: req.user.id });
     const description = await scrapeIndeedJobDescription(req.body.link);
@@ -64,7 +65,7 @@ const createJob = async (req, res) => {
   }
 };
 
-const addCoverLetterToJob = async (req, res) => {
+export const addCoverLetterToJob = async (req: IAuthRequest, res: Response) => {
   const { jobId } = req.params;
   const { title, body } = req.body;
   try {
@@ -79,7 +80,10 @@ const addCoverLetterToJob = async (req, res) => {
   }
 };
 
-const updateCoverLetterOnJob = async (req, res) => {
+export const updateCoverLetterOnJob = async (
+  req: IAuthRequest,
+  res: Response
+) => {
   const { title, body } = req.body;
   const { jobId, coverLetterId } = req.params;
 
@@ -98,7 +102,7 @@ const updateCoverLetterOnJob = async (req, res) => {
       {
         omitUndefined: true,
         useFindAndModify: false,
-      }
+      } as any
     );
     const board = await Board.findOne({
       userId: req.user.id,
@@ -118,7 +122,10 @@ const updateCoverLetterOnJob = async (req, res) => {
   }
 };
 
-const deleteCoverLetterOnJob = async (req, res) => {
+export const deleteCoverLetterOnJob = async (
+  req: IAuthRequest,
+  res: Response
+) => {
   const { jobId, coverLetterId } = req.params;
 
   try {
@@ -143,17 +150,18 @@ const deleteCoverLetterOnJob = async (req, res) => {
   }
 };
 
-const updateJobById = async (req, res) => {
+export const updateJobById = async (req: IAuthRequest, res: Response) => {
+  const { title, company, location, link, posted, description } = req.body;
   try {
     const updated = await Job.updateOne(
       { _id: req.params.id, userId: req.user.id },
       {
-        title: req.body.title,
-        company: req.body.company,
-        location: req.body.location,
-        link: req.body.link,
-        posted: req.body.posted,
-        description: req.body.description,
+        title: title,
+        company: company,
+        location: location,
+        link: link,
+        posted: posted,
+        description: description,
       },
       { omitUndefined: true }
     );
@@ -164,7 +172,7 @@ const updateJobById = async (req, res) => {
   }
 };
 
-const deleteJobByListId = async (req, res) => {
+export const deleteJobByListId = async (req: IAuthRequest, res: Response) => {
   try {
     const list = await List.findOne({ _id: req.params.listId }).exec();
     const job = list.jobs[req.params.jobArrangement];
@@ -178,7 +186,7 @@ const deleteJobByListId = async (req, res) => {
   }
 };
 
-const moveJob = async (req, res) => {
+export const moveJob = async (req: IAuthRequest, res: Response) => {
   try {
     const { from, to } = req.body;
     const board = await Board.findOne({ userId: req.user.id, title: "Default" })
@@ -199,14 +207,4 @@ const moveJob = async (req, res) => {
     res.status(500);
     res.send({ Error: err });
   }
-};
-
-module.exports = {
-  createJob,
-  updateJobById,
-  updateCoverLetterOnJob,
-  addCoverLetterToJob,
-  deleteCoverLetterOnJob,
-  deleteJobByListId,
-  moveJob,
 };

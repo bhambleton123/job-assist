@@ -1,6 +1,6 @@
-const Board = require("../models/board").Board;
+import { Board } from "../models/board/board";
 
-const getBoard = async (req, res) => {
+export const getBoard = async (req: any, res: any) => {
   try {
     const board = await Board.findOne({
       userId: req.user.id,
@@ -19,5 +19,3 @@ const getBoard = async (req, res) => {
     res.send(err);
   }
 };
-
-module.exports = { getBoard };

@@ -1,5 +1,5 @@
-const puppeteer = require("puppeteer");
-const avoidDetection = require("./avoid-detection");
+import puppeteer from "puppeteer";
+import avoidDetection from "./avoid-detection";
 
 const __launchPuppeteer = async () => {
   const browser = await puppeteer.launch({ headless: true });
@@ -10,7 +10,7 @@ const __launchPuppeteer = async () => {
   return { browser, page };
 };
 
-const scrapeIndeed = async (url, pageNum) => {
+export const scrapeIndeed = async (url: string, pageNum: number) => {
   let newUrl = `${url}&start=${50 * pageNum}`;
   const puppeteer = await __launchPuppeteer();
   await puppeteer.page.goto(newUrl);
@@ -21,10 +21,13 @@ const scrapeIndeed = async (url, pageNum) => {
     ).map((title, index) => {
       return {
         title: title.innerHTML.slice(1),
-        company: document.getElementsByClassName("company")[index].innerText,
-        location: document.getElementsByClassName("location")[index].innerText,
+        company: (document as any).getElementsByClassName("company")[index]
+          .innerText,
+        location: (document as any).getElementsByClassName("location")[index]
+          .innerText,
         link: title.toString(),
-        posted: document.getElementsByClassName("date")[index].innerText,
+        posted: (document as any).getElementsByClassName("date")[index]
+          .innerText,
       };
     });
 
@@ -35,7 +38,7 @@ const scrapeIndeed = async (url, pageNum) => {
   return jobs;
 };
 
-const scrapeIndeedJobDescription = async (url) => {
+export const scrapeIndeedJobDescription = async (url: string) => {
   const puppeteer = await __launchPuppeteer();
   url = url.replace("/rc/clk", "/viewjob");
   await puppeteer.page.goto(url);
@@ -44,11 +47,9 @@ const scrapeIndeedJobDescription = async (url) => {
     if (!document.getElementById("jobDescriptionText")) {
       return "Click link below to learn more...";
     } else {
-      return document.getElementById("jobDescriptionText").innerHTML;
+      return (document as any).getElementById("jobDescriptionText").innerHTML;
     }
   });
   puppeteer.browser.close();
   return description;
 };
-
-module.exports = { scrapeIndeed, scrapeIndeedJobDescription };

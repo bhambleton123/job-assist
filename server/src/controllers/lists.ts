@@ -1,8 +1,10 @@
-const Board = require("../models/board").Board;
-const List = require("../models/list").List;
-const Job = require("../models/job").Job;
+import { Board } from "../models/board/board";
+import { List } from "../models/list/list";
+import { Job } from "../models/job/job";
+import { IAuthRequest } from "../auth/auth-request.interface";
+import { Response } from "express";
 
-const createList = async (req, res) => {
+export const createList = async (req: IAuthRequest, res: Response) => {
   try {
     const boardCount = await Board.countDocuments({
       userId: req.user.id,
@@ -39,7 +41,7 @@ const createList = async (req, res) => {
   }
 };
 
-const updateList = async (req, res) => {
+export const updateList = async (req: IAuthRequest, res: Response) => {
   try {
     const updatedList = await List.updateOne(
       { userId: req.user.id, _id: req.params.id },
@@ -53,7 +55,7 @@ const updateList = async (req, res) => {
   }
 };
 
-const deleteList = async (req, res) => {
+export const deleteList = async (req: IAuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const list = await List.findOne({ _id: id }).populate("jobs").exec();
@@ -94,5 +96,3 @@ const deleteList = async (req, res) => {
     res.send(err);
   }
 };
-
-module.exports = { createList, updateList, deleteList };

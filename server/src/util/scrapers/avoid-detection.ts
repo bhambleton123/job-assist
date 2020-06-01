@@ -1,4 +1,4 @@
-const avoidDetection = async (page) => {
+const avoidDetection = async (page: any) => {
   const userAgent =
     "Mozilla/5.0 (X11; Linux x86_64)" +
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.39 Safari/537.36";
@@ -11,7 +11,7 @@ const avoidDetection = async (page) => {
   });
 
   await page.evaluateOnNewDocument(() => {
-    window.navigator.chrome = {
+    (window as any).navigator.chrome = {
       app: {
         isInstalled: false,
       },
@@ -57,15 +57,16 @@ const avoidDetection = async (page) => {
       },
     };
 
-    window.chrome = true;
+    (window as any).chrome = true;
   });
 
   await page.evaluateOnNewDocument(() => {
     const originalQuery = window.navigator.permissions.query;
-    return (window.navigator.permissions.query = (parameters) =>
+    return ((window as any).navigator.permissions.query = (parameters: any) => {
       parameters.name === "notifications"
         ? Promise.resolve({ state: Notification.permission })
-        : originalQuery(parameters));
+        : originalQuery(parameters);
+    });
   });
 
   await page.evaluateOnNewDocument(() => {
@@ -81,4 +82,4 @@ const avoidDetection = async (page) => {
   });
 };
 
-module.exports = avoidDetection;
+export default avoidDetection;
