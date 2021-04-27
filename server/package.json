@@ -22,7 +22,7 @@
     "passport": "^0.4.1",
     "passport-google-oauth": "^2.0.0",
     "puppeteer": "^3.0.2",
-    "redis": "^3.0.2"
+    "redis": "^3.1.1"
   },
   "devDependencies": {
     "@types/connect-redis": "^0.0.14",
